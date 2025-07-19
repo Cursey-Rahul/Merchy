@@ -3,15 +3,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const GETDATA= async(all : string) => {
-  const response = await fetch(`http://localhost:3000/api/products?category=${all}`);
+const GETDATA= async() => {
+  const response = await fetch(`http://localhost:3000/api/all-products`);
   return response.json();
 }
 
 
 
 const products = async() => {
-  const foodProducts : Product[] = await GETDATA("burger");
+  const foodProducts : Product[] = await GETDATA();
   return (
     <div className='flex flex-wrap items-center'>
       {foodProducts.map((items)=>(

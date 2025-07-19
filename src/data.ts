@@ -33,8 +33,8 @@
 //       img: "/temperory/p1.png",
 //       price: 12.99,
 //       options: [{
-//         title: "Extra Cheese",
-//         additionalPrice: 2.00
+//         "title": "Extra Cheese",
+//         "additionalPrice": "2.00"
 //       }]
 //     },
 //     {
