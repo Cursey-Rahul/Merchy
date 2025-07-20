@@ -4,11 +4,16 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req:NextRequest) => {
      const {searchParams}= new URL (req.url)
-    const products = searchParams.get('id')
+    const id = searchParams.get('id');
+    
+    if (!id) {
+        return new NextResponse(JSON.stringify({ message: "Product ID is required." }), { status: 400 });
+    }
     try {
-       const product = await prisma.product.findMany({
+       const product = await prisma.product.findUnique({
             where: {
-              ...(products? {id:products}:{}) }
+              id,
+            }
             })
         return new NextResponse(JSON.stringify(product),{status: 200});
         

@@ -1,25 +1,32 @@
 "use client"
+import { Product } from '@/types/types';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
-type Props = {
-    price: number;
-    options?:{ title: string, additionalPrice: number }[];
-};
-const Price = ({price,options}: Props) => {
+
+const Price = ({product}: {product: Product}) => {
   const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(price);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(-1);
+
   useEffect(() => {
-    setTotal(quantity*(options? options[selected].additionalPrice+price: price))
-  
-  }, [quantity, selected, price, options]);
+    // When the product prop changes, reset the quantity and selected option.
+    setQuantity(1);
+    setSelected(-1);
+  }, [product]);
+
+  const basePrice = Number(product.price);
+  const optionsPrice =
+    product.options?.length && selected !== -1 && product.options[selected]
+      ? Number(product.options[selected].additionalPrice)
+      : 0;
+
+  const total = quantity * (basePrice + optionsPrice);
   
   return (
     <div className='flex flex-col items-start w-full justify-start px-4'>
-        <h2 className='text-2xl font-semibold'>${total}</h2>
+        <h2 className='text-2xl font-semibold'>${total.toFixed(2)}</h2>
         <div>
-           {options?.map((index,id)=>(
-            <button className=' text-xl px-4 py-2 mr-3 mb-3 mt-3 ring-1 ring-red-500 rounded-md' key={index.title} style={{background: selected===id?"rgb(239 68 68)": "white", color: selected===id?"white": "rgb(239 68 68)" }} onClick={()=>setSelected(id)}>{index.title}</button>
+           {product.options?.map((option,id)=>(
+            <button className=' text-xl px-4 py-2 mr-3 mb-3 mt-3 ring-1 ring-red-500 rounded-md' key={option.title} style={{background: selected===id?"rgb(239 68 68)": "white", color: selected===id?"white": "rgb(239 68 68)" }} onClick={()=>setSelected(selected === id ? -1 : id)}>{option.title}</button>
         
            )
         )}

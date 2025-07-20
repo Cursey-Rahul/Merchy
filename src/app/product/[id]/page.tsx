@@ -4,9 +4,9 @@ import Price from '@/components/Price';
 import { Product } from '@/types/types';
 
 const GETDATA= async(id: string)=>{
-  const response = await fetch(`http://localhost:3000/api/products?id=${id}`);
+  const response = await fetch(`http://localhost:3000/api/singleproduct?id=${id}`);
  const data = await response.json();
-   return data[0]; 
+   return data;
 }
 
 const productPage = async({
@@ -24,7 +24,7 @@ const productPage = async({
         <div className=' text-red-400 w-full md:w-1/2 p-5 flex flex-col justify-center text-center items-center gap-8'>
           <h1 className='font-bold text-3xl'>{item.title}</h1>
           <p className=' text-xl'>{item.description}</p>
-          <Price price={item.price} options={item.options} />
+          <Price product={item} />
        </div>
 
     </div>
