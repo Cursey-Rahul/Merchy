@@ -1,24 +1,22 @@
 "use client"
+import { Product } from '@/types/types';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
-type Props = {
-    price: number;
-    options?:{ title: string, additionalPrice: number }[];
-};
-const Price = ({price,options}: Props) => {
+
+const Price = ( {product}: {product:Product}) => {
   const [quantity, setQuantity] = useState(1);
-  const [total, setTotal] = useState(price);
+  const [total, setTotal] = useState(product.price);
   const [selected, setSelected] = useState(0);
   useEffect(() => {
-    setTotal(quantity*(options? options[selected].additionalPrice+price: price))
+    setTotal(quantity*(product.options? product.options[selected].additionalPrice+product.price: product.price));
   
-  }, [quantity, selected, price, options]);
+  }, [quantity, selected, product.options, product.price]);
   
   return (
     <div className='flex flex-col items-start w-full justify-start px-4'>
         <h2 className='text-2xl font-semibold'>${total}</h2>
         <div>
-           {options?.map((index,id)=>(
+           {product.options?.map((index,id)=>(
             <button className=' text-xl px-4 py-2 mr-3 mb-3 mt-3 ring-1 ring-red-500 rounded-md' key={index.title} style={{background: selected===id?"rgb(239 68 68)": "white", color: selected===id?"white": "rgb(239 68 68)" }} onClick={()=>setSelected(id)}>{index.title}</button>
         
            )
