@@ -4,17 +4,17 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 const slides=[
   { id:1,
-    title: "always fresh & always crispy & always hot",
-    img:"/slide1.png"
+    title: "Always fresh, always crispy, always hot — just like your favorite Indian snacks.",
+    img:"/m1.jpeg"
 
   },
   { id:2,
-    title: "we deliver your food wherever you are in sahdara",
-    img:"/slide2.png"
+    title: "From spicy biryanis to buttery naans, we deliver it all, anywhere in Delhi.",
+    img:"/m2.jpeg"
   },
   { id:3,
-    title: "the best food to enjoy your meal",
-    img:"/slide3.jpg"
+    title: "The best desi food to spice up every meal, anytime you crave it.",
+    img:"/m3.jpeg"
   },
 ]
 

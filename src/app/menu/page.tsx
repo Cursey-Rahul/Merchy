@@ -10,7 +10,7 @@ const GETDATA = async()=>{
 const menuPage = async() => {
   const foodItems: FoodItemType[]= await GETDATA();
     return (
-    <div className='h-[calc(100vh-6rem)] md:h-[calc(100vh-8rem)] p-4 lg:px-15 xl:px-25 flex flex-col md:flex-row items-center'>
+    <div className='my-6 md:my-12 2xl:my-18 p-4 lg:px-15 xl:px-25 flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-6  '>
       {foodItems.map((items)=>(
           <Link key={items.id} 
           href={`/menu/${items.slug}`} 
