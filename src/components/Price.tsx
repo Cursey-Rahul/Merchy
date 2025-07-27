@@ -7,6 +7,7 @@ const Price = ( {product}: {product:Product}) => {
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(Number(product.price));
   const [selected, setSelected] = useState(0);
+ 
   useEffect(() => {
     setTotal(quantity*(product.options? Number(product.options[selected].additionalPrice)+Number(product.price): Number(product.price)));
   
