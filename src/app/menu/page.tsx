@@ -15,7 +15,7 @@ const menuPage = async() => {
           <Link key={items.id} 
           href={`/menu/${items.slug}`} 
           className='w-full h-1/3 bg-cover p-8 md:h-[49vh] flex md:justify-center xl:justify-start' 
-          style={{ backgroundImage: `url(${items.img})` }} >
+          style={{ backgroundImage: `url(https://res.cloudinary.com/dq5vadic7/image/upload/${items.img})`}} >
 
           <div className={`text-${items.colour} w-1/2 flex flex-col items-center text-center justify-center gap-4` }>
             <h1 className='text-xl font-bold md:text-3xl lg:text-4xl'>{items.title}</h1>

@@ -1,17 +1,37 @@
 "use client"
+import { useCartStore } from '@/app/store/store';
 import { Product } from '@/types/types';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const Price = ( {product}: {product:Product}) => {
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(Number(product.price));
   const [selected, setSelected] = useState(0);
+  const addToCart = useCartStore((state) => state.addToCart);
+  const router = useRouter();
  
   useEffect(() => {
     setTotal(quantity*(product.options? Number(product.options[selected].additionalPrice)+Number(product.price): Number(product.price)));
   
   }, [quantity, selected, product.options, product.price]);
+    const handleAddToCart = () => {
+    const selectedOption = product.options?.[selected];
+
+    addToCart({
+      id: String(product.id),
+      name: product.title,
+      image: product.img,
+      price: product.options
+        ? Number(product.price) +
+          Number(product.options[selected].additionalPrice)
+        : Number(product.price),
+      quantity,
+      option: selectedOption?.title ?? undefined,
+    });
+
+    router.push("/cart"); // Navigate to cart
+  };
   
   return (
     <div className='flex flex-col items-start w-full justify-start px-4'>
@@ -33,9 +53,9 @@ const Price = ( {product}: {product:Product}) => {
             </div>
         </div>
         <div>
-        <Link href="/cart">
-        <button className='bg-red-500  ring-red-500 ring-1 text-white p-2 rounded-lg text-base text-nowrap uppercase'>add to cart</button>
-        </Link>
+        
+        <button className='bg-red-500  ring-red-500 ring-1 text-white p-2 rounded-lg text-base text-nowrap uppercase' onClick={handleAddToCart}>add to cart</button>
+        
         </div>
        </div>
     </div>

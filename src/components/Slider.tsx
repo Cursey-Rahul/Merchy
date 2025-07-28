@@ -5,16 +5,16 @@ import React, { useEffect, useState } from 'react'
 const slides=[
   { id:1,
     title: "Always fresh, always crispy, always hot — just like your favorite Indian snacks.",
-    img:"/m1.jpeg"
+    img:"https://res.cloudinary.com/dq5vadic7/image/upload/m1_a8axt9"
 
   },
   { id:2,
     title: "From spicy biryanis to buttery naans, we deliver it all, anywhere in Delhi.",
-    img:"/m2.jpeg"
+    img:"https://res.cloudinary.com/dq5vadic7/image/upload/m2_qvtv6n"
   },
   { id:3,
     title: "The best desi food to spice up every meal, anytime you crave it.",
-    img:"/m3.jpeg"
+    img:"https://res.cloudinary.com/dq5vadic7/image/upload/m3_et6vzr"
   },
 ]
 
