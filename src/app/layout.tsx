@@ -5,6 +5,7 @@ import "./globals.css";
 import Notification from "@/components/notification";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +31,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      ><SessionProviderWrapper>
         <Notification />
         <Navbar />
         {children}
         <Footer />
+      </SessionProviderWrapper>
+        
+      
       </body>
     </html>
   );

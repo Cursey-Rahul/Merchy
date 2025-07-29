@@ -1,10 +1,15 @@
+"use client";
 import Image from 'next/image'
 import Menu from './menu'
 import Link from 'next/link'
 import Shopingcart from './Shopingcart'
+import { signOut, useSession } from 'next-auth/react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Button } from './ui/button';
 
-const header = () => {
-  const user =false
+const Header = () => {
+  const { data: session} = useSession();
  
   return (
  
@@ -30,9 +35,21 @@ const header = () => {
           <Image src='/phone.png' alt='' width={20} height={20} />  
           <span>981896391</span>
         </div>
-        {!user? ( <Link href='/login' className=' hover:underline hover:font-semibold'>Login</Link>):(<Link href='/orders' className=' hover:underline hover:font-semibold'>orders</Link>)}
-        <Shopingcart/>
+        {!session?.user ?(<div><Link href='/login' className=' hover:underline hover:font-semibold'>Login</Link></div>) : (<div className='flex items-center gap-8'>  <Shopingcart/> <DropdownMenu>
+  <DropdownMenuTrigger> <Avatar>
+         <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+           </Avatar> </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem><Link href='/orders' className=' hover:underline hover:font-semibold'>My Orders</Link></DropdownMenuItem>
+    <DropdownMenuItem><Button variant="destructive" onClick={() => signOut()}>Sign Out</Button></DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+        </div>)}
       </div>
+     
       <div className='md:hidden '>
         <Menu/>
       </div>
@@ -40,4 +57,4 @@ const header = () => {
   )
 }
 
-export default header
+export default Header

@@ -3,7 +3,7 @@ import React from 'react'
 import Countdown from 'react-countdown'
 const countdownend= new Date('2025-08-08')
 
-const counter = () => {
+const Counter = () => {
   return (
     <div>
         <Countdown className="text-yellow-300 font-bold text-6xl" date={countdownend} />
@@ -11,4 +11,4 @@ const counter = () => {
   )
 }
 
-export default counter
+export default Counter

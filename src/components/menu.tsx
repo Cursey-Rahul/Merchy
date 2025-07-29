@@ -3,16 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Shopingcart from './Shopingcart'
+import { useSession } from 'next-auth/react'
 
 const toggles = [
     { id: 1, title: "Homepage", url: "/" },
     { id: 2, title: "Menu", url: "/menu" },
-    { id: 3, title: "Working Hours", url: "/" },
-    { id: 4, title: "Contact", url: "/" },
+    { id: 3, title: "Contact", url: "/contact" },
 ]
 function Menu() {
     const [open, setOpen] = useState(false)
-    const user= false
+    const { data: session } = useSession();
     return (
         <div>
             {!open ? (
@@ -27,10 +27,10 @@ function Menu() {
                     <Link key={toggle.id} href={toggle.url} onClick={() => { setOpen(false) }}>{toggle.title} </Link>
                 ))}
 
-                {!user? (<Link href='/login' onClick={() => { setOpen(false) }}>Login</Link>):(<Link href='/order' onClick={() => { setOpen(false) }}>Orders</Link>)}
-                <Link href="/cart" onClick={() => { setOpen(false) }}> 
+                {!session?.user? (<Link href='/login' onClick={() => { setOpen(false) }}>Login</Link>):(<Link href='/orders' onClick={() => { setOpen(false) }}>Orders</Link>)}
+                <div onClick={() => { setOpen(false) }}> 
                  <Shopingcart/>
-                </Link>
+                </div>
               
 
             </div>
