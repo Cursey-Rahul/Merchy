@@ -44,7 +44,7 @@ const Header = () => {
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuItem><Link href='/orders' className=' hover:underline hover:font-semibold'>My Orders</Link></DropdownMenuItem>
-    <DropdownMenuItem><Button variant="destructive" onClick={() => signOut()}>Sign Out</Button></DropdownMenuItem>
+    <DropdownMenuItem><Button variant="destructive" onClick={() => signOut()}>Log Out</Button></DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
         </div>)}

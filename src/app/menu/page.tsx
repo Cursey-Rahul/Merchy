@@ -24,7 +24,6 @@ const menuPage = async() => {
           </div>
           </Link>
       )
-    
     )
       
     }

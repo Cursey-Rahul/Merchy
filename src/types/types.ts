@@ -18,4 +18,11 @@ export type FoodItemType = {
       additionalPrice: number; // Additional price can also be a number or Decimal type
     }[];
   };
-  
+  export type Order = {
+  id: string;
+  createdAt: Date;
+  userEmail: string; // Assuming you have a user email field
+  price: string; // Decimal values are usually returned as strings in Prisma
+  products: Product[];// JSON type — you can use a more specific type if you know the structure
+  status: string; // e.g., "pending", "paid", etc.
+};

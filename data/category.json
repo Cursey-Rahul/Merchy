@@ -1,0 +1,42 @@
+[
+  {
+   
+    "title": "North Indian",
+    "description": "Rich, creamy dishes like butter chicken, paneer tikka, and naan. Known for bold spices and dairy-based gravies.",
+    "img": "img5_tlbpus",
+    "colour": "white",
+    "slug": "north-indian"
+  },
+  {
+   
+    "title": "South Indian",
+    "description": "Famous for dosas, idlis, and sambar. Features rice-based meals, coconut, curry leaves, and mustard seeds.",
+    "img": "img4_abrqhc",
+    "colour": "black",
+    "slug": "south-indian"
+  },
+  {
+
+   
+    "title": "East Indian",
+    "description": "Light and flavorful dishes like momos, fish curry, and sweets like rasgulla. Often includes mustard oil and rice.",
+    "img": "img2_zokccr",
+    "colour": "white",
+    "slug": "east-indian"
+  },
+  {
+   
+    "title": "West Indian",
+    "description": "Includes Gujarati, Rajasthani, and Maharashtrian cuisines. Offers spicy snacks, dhokla, and thalis.",
+    "img": "img1_f2ad0t",
+    "colour": "black",
+    "slug": "west-indian"
+  },
+  {
+    "title": "Central Indian",
+    "description": "Staples like bhutte ka kees, poha, and dal bafla. A blend of flavors from neighboring regions.",
+    "img": "img3_zjlkhg",
+    "colour": "white",
+    "slug": "central-indian"
+  }
+]

@@ -1,0 +1,123 @@
+[
+  {
+    "title": "Butter Chicken",
+    "description": "A rich and creamy tomato-based curry made with marinated chicken and Indian spices.",
+    "img": "/temperory/p1.png",
+    "price": 249,
+    "options": [
+      { "title": "Normal Spice", "additionalPrice": 0 },
+      { "title": "Extra Cream", "additionalPrice": 40 }
+    ],
+    "catSlug": "north-indian"
+  },
+  {
+    "title": "Paneer Tikka",
+    "description": "Chunks of paneer marinated in spices and grilled to perfection.",
+    "img": "/temperory/p2.png",
+    "price": 199,
+    "options": [
+      { "title": "Regular Chutney", "additionalPrice": 0 },
+      { "title": "Add Mint Chutney", "additionalPrice": 20 }
+    ],
+    "catSlug": "north-indian"
+  },
+  {
+    "title": "Masala Dosa",
+    "description": "Crispy dosa stuffed with spiced potato filling, served with chutney and sambar.",
+    "img": "/temperory/p3.png",
+    "price": 120,
+    "options": [
+      { "title": "Standard Sambar", "additionalPrice": 0 },
+      { "title": "Extra Sambar", "additionalPrice": 15 }
+    ],
+    "catSlug": "south-indian"
+  },
+  {
+    "title": "Idli Sambar",
+    "description": "Soft steamed rice cakes served with flavorful sambar and coconut chutney.",
+    "img": "/temperory/p4.png",
+    "price": 80,
+    "options": [
+      { "title": "Regular Chutney", "additionalPrice": 0 },
+      { "title": "Extra Coconut Chutney", "additionalPrice": 10 }
+    ],
+    "catSlug": "south-indian"
+  },
+  {
+    "title": "Fish Curry",
+    "description": "Tangy and spicy fish curry made with mustard oil and traditional East Indian spices.",
+    "img": "/temperory/p5.png",
+    "price": 210,
+    "options": [
+      { "title": "Normal Spice", "additionalPrice": 0 },
+      { "title": "Add Rice", "additionalPrice": 30 }
+    ],
+    "catSlug": "east-indian"
+  },
+  {
+    "title": "Momos",
+    "description": "Steamed dumplings filled with vegetables or meat, served with spicy chutney.",
+    "img": "/temperory/p6.png",
+    "price": 110,
+    "options": [
+      { "title": "Steamed", "additionalPrice": 0 },
+      { "title": "Fried", "additionalPrice": 20 }
+    ],
+    "catSlug": "east-indian"
+  },
+  {
+    "title": "Dhokla",
+    "description": "Soft and spongy fermented snack from Gujarat, made with chickpea flour.",
+    "img": "/temperory/p7.png",
+    "price": 90,
+    "options": [
+      { "title": "Regular", "additionalPrice": 0 },
+      { "title": "Add Green Chilli", "additionalPrice": 10 }
+    ],
+    "catSlug": "west-indian"
+  },
+  {
+    "title": "Misal Pav",
+    "description": "Spicy sprouted lentil curry topped with farsan, served with pav (bread).",
+    "img": "/temperory/p8.png",
+    "price": 130,
+    "options": [
+      { "title": "Normal Spice", "additionalPrice": 0 },
+      { "title": "Extra Farsan", "additionalPrice": 15 }
+    ],
+    "catSlug": "west-indian"
+  },
+  {
+    "title": "Poha",
+    "description": "Flattened rice sautéed with onions, mustard seeds, turmeric, and peanuts.",
+    "img": "/temperory/p9.png",
+    "price": 60,
+    "options": [
+      { "title": "Plain", "additionalPrice": 0 },
+      { "title": "Add Sev", "additionalPrice": 10 }
+    ],
+    "catSlug": "central-indian"
+  },
+  {
+    "title": "Dal Bafla",
+    "description": "Traditional dish of wheat dough balls baked and served with spicy dal.",
+    "img": "/temperory/p10.png",
+    "price": 150,
+    "options": [
+      { "title": "No Ghee", "additionalPrice": 0 },
+      { "title": "Add Ghee", "additionalPrice": 25 }
+    ],
+    "catSlug": "central-indian"
+  },
+  {
+    "title": "Bhutte Ka Kees",
+    "description": "Grated corn cooked in milk and spices, a popular delicacy from Madhya Pradesh.",
+    "img": "/temperory/p11.png",
+    "price": 85,
+    "options": [
+      { "title": "Mild Spice", "additionalPrice": 0 },
+      { "title": "Add Coriander", "additionalPrice": 10 }
+    ],
+    "catSlug": "central-indian"
+  }
+]

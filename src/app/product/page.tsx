@@ -7,9 +7,6 @@ const GETDATA= async() => {
   const response = await fetch(`http://localhost:3000/api/all-products`);
   return response.json();
 }
-
-
-
 const products = async() => {
   const foodProducts : Product[] = await GETDATA();
   return (
