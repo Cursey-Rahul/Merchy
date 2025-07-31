@@ -5,6 +5,8 @@ import { useCartStore } from '../store/store';
 import { Button } from '@/components/ui/button';
 
 const CartPage = () => {
+  
+
   const totalQuantity = useCartStore((state) =>
     state.getTotalQuantity()
   );

@@ -17,6 +17,7 @@ const Price = ( {product}: {product:Product}) => {
   }, [quantity, selected, product.options, product.price]);
     const handleAddToCart = () => {
     const selectedOption = product.options?.[selected];
+    
 
     addToCart({
       id: String(product.id),

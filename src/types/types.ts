@@ -26,3 +26,9 @@ export type FoodItemType = {
   products: Product[];// JSON type — you can use a more specific type if you know the structure
   status: string; // e.g., "pending", "paid", etc.
 };
+export type Cart = {
+  id: string;
+  createdAt: Date;
+  products: Product[]; // Assuming products are stored as an array of Product objects
+  userEmail: string; // Assuming you have a user email field
+};
