@@ -7,7 +7,6 @@ import React from 'react'
 const Shopingcart = () => {
   const totalQuantity = useCartStore((state) => state.getTotalQuantity());
   
-
   return (
    
     <Link href='/cart' className='flex items-center gap-4 md:gap-2'>

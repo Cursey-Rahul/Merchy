@@ -30,7 +30,6 @@ const Price = ( {product}: {product:Product}) => {
       quantity,
       option: selectedOption?.title ?? undefined,
     });
-
     router.push("/cart"); // Navigate to cart
   };
   

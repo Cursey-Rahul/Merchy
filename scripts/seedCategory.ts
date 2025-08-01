@@ -22,3 +22,5 @@ seedCategory()
   .finally(() => {
     prisma.$disconnect();
   });
+//npx tsx scripts/seedCategory.ts
+//npx tsx scripts/seedProducts.ts

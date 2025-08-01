@@ -32,3 +32,11 @@ export type Cart = {
   products: Product[]; // Assuming products are stored as an array of Product objects
   userEmail: string; // Assuming you have a user email field
 };
+
+export type CartItems = {
+  id: string;
+  userEmail :  string
+  productId: string
+  quantity: number;
+  option?: string; // e.g. "Small", "Medium", etc.
+}
