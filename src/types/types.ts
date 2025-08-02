@@ -34,9 +34,12 @@ export type Cart = {
 };
 
 export type CartItems = {
-  id: string;
-  userEmail :  string
-  productId: string
-  quantity: number;
-  option?: string; // e.g. "Small", "Medium", etc.
+        userEmail: string,
+        productId: string,
+        id : string;
+        name: string,
+        image: string,
+        price: string,
+        quantity: number,
+        option: string 
 }
