@@ -1,48 +1,42 @@
 import { NextResponse } from "next/server";
 import prisma from "@/utils/connect"; 
-import { CartItems } from "@/types/types";
 
 export async function POST(req: Request) {
   try {
-    const { userEmail, cart } = await req.json();
+    const { userEmail, productId, title, img, price, quantity, option } = await req.json();
 
-    if (!userEmail || !cart) {
+    if (!userEmail || !productId || !title || !img || !price || !quantity) {
       return NextResponse.json({ error: "Missing data" }, { status: 400 });
     }
 
-    const upsertOps = cart.map(async (item: CartItems) => {
       const existingItem = await prisma.cartItem.findFirst({
         where: {
           userEmail,
-          productId: item.id,
-          options: item.option || '',
+          productId,
+          options: option || '',
         },
       });
 
       if (existingItem) {
-        return prisma.cartItem.update({
+        await prisma.cartItem.update({
           where: { id: existingItem.id },
           data: {
-            quantity: existingItem.quantity + item.quantity,
+            quantity: existingItem.quantity + quantity,
           },
         });
       } else {
-        return prisma.cartItem.create({
+        await prisma.cartItem.create({
           data: {
             userEmail,
-            productId: item.id,
-            options: item.option || '',
-            quantity: item.quantity,
-            title: item.name,
-            price: item.price,
-            img: item.image,
+            productId,
+            options: option || '',
+            quantity,
+            title,
+            price,
+            img,
           },
         });
       }
-    });
-
-    await Promise.all(upsertOps);
-
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error in /api/save-cart:", error);

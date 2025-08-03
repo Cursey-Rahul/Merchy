@@ -1,39 +1,65 @@
 "use client"
-import { useCartStore } from '@/app/store/store';
 import { Product } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { useQuantityStore } from '@/app/store/quantityStore';
+
+import { useSession } from 'next-auth/react';
 
 
 const Price = ( {product}: {product:Product}) => {
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(Number(product.price));
   const [selected, setSelected] = useState(0);
-  const addToCart = useCartStore((state) => state.addToCart);
+  const quantityStore = useQuantityStore((state) => state.setQuantity);
   const router = useRouter();
+  const { data: session } = useSession(); // ✅ use this instead of getSession()
+
  
   useEffect(() => {
     setTotal(quantity*(product.options? Number(product.options[selected].additionalPrice)+Number(product.price): Number(product.price)));
   
   }, [quantity, selected, product.options, product.price]);
-    const handleAddToCart = () => {
-    const selectedOption = product.options?.[selected];
-    
+    const handleAddToCart = async () => {
+  const selectedOption = product.options?.[selected];
+  quantityStore(quantity); // update local Zustand store
 
-    addToCart({
-      id: String(product.id),
-      name: product.title,
-      image: product.img,
-      price: product.options
-        ? Number(product.price) +
-          Number(product.options[selected].additionalPrice)
-        : Number(product.price),
-      quantity,
-      option: selectedOption?.title ?? undefined,
+  if (!session?.user?.email) {
+    console.error("No session email");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/save-cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userEmail: session.user.email,
+        productId: String(product.id),
+        title: product.title,
+        img: product.img,
+        price: product.options
+          ? Number(product.price) + Number(product.options[selected].additionalPrice)
+          : Number(product.price),
+        quantity,
+        option: selectedOption?.title ?? undefined,
+      }),
     });
-    router.push("/cart"); // Navigate to cart
-  };
-  
+
+    if (!res.ok) {
+      throw new Error("Failed to save cart");
+    }
+
+    const result = await res.json();
+    console.log("✅ Cart saved:", result);
+
+    router.push("/cart"); // ✅ redirect only after successful save
+  } catch (error) {
+    console.error("❌ Error saving cart:", error);
+  }
+};
+
+
   return (
     <div className='flex flex-col items-start w-full justify-start px-4'>
         <h2 className='text-2xl font-semibold'>${total.toFixed(2)}</h2>
@@ -54,8 +80,9 @@ const Price = ( {product}: {product:Product}) => {
             </div>
         </div>
         <div>
-        
-        <button className='bg-red-500  ring-red-500 ring-1 text-white p-2 rounded-lg text-base text-nowrap uppercase' onClick={handleAddToCart}>add to cart</button>
+        <button className='bg-red-500  ring-red-500 ring-1 text-white p-2 rounded-lg text-base text-nowrap uppercase' onClick={()=>{
+          handleAddToCart();
+        }}>add to cart</button>
         
         </div>
        </div>
