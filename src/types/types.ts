@@ -43,3 +43,14 @@ export type CartItems = {
         quantity: number,
         option: string 
 }
+
+export type CartItem = {
+        userEmail: string,
+        productId: string,
+        id : string;
+        title: string,
+        img: string,
+        price: string,
+        quantity: number,
+        options: string 
+}

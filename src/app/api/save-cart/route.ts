@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from "next/server";
 import prisma from "@/utils/connect"; 
 import { CartItems } from "@/types/types";
@@ -11,21 +9,39 @@ export async function POST(req: Request) {
     if (!userEmail || !cart) {
       return NextResponse.json({ error: "Missing data" }, { status: 400 });
     }
-    const createOps = cart.map((item:CartItems) =>
-      prisma.cartItem.create({
-        data: {
+
+    const upsertOps = cart.map(async (item: CartItems) => {
+      const existingItem = await prisma.cartItem.findFirst({
+        where: {
           userEmail,
           productId: item.id,
-          options: item.option,
-          quantity: item.quantity,
-          title: item.name,
-          price: item.price,
-          img: item.image,
+          options: item.option || '',
         },
-      })
-    );
+      });
 
-    await Promise.all(createOps);
+      if (existingItem) {
+        return prisma.cartItem.update({
+          where: { id: existingItem.id },
+          data: {
+            quantity: existingItem.quantity + item.quantity,
+          },
+        });
+      } else {
+        return prisma.cartItem.create({
+          data: {
+            userEmail,
+            productId: item.id,
+            options: item.option || '',
+            quantity: item.quantity,
+            title: item.name,
+            price: item.price,
+            img: item.image,
+          },
+        });
+      }
+    });
+
+    await Promise.all(upsertOps);
 
     return NextResponse.json({ success: true });
   } catch (error) {

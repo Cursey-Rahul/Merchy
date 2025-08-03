@@ -4,6 +4,7 @@ import { Product } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
+
 const Price = ( {product}: {product:Product}) => {
   const [quantity, setQuantity] = useState(1);
   const [total, setTotal] = useState(Number(product.price));
