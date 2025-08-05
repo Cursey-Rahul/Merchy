@@ -15,11 +15,14 @@ const Price = ( {product}: {product:Product}) => {
   const router = useRouter();
   const { data: session } = useSession(); 
 
- 
-  useEffect(() => {
-    setTotal(quantity*(product.options? Number(product.options[selected].additionalPrice)+Number(product.price): Number(product.price)));
-  
-  }, [quantity, selected, product.options, product.price]);
+ useEffect(() => {
+  const selectedOption = product.options?.[selected];
+  const additionalPrice = selectedOption?.additionalPrice ?? 0;
+
+  setTotal(quantity * (Number(product.price) + additionalPrice));
+}, [quantity, selected, product.options, product.price]);
+
+
     const handleAddToCart = async () => {
   const selectedOption = product.options?.[selected];
   quantityStore(quantity); // update local Zustand store

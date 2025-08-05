@@ -41,7 +41,7 @@ export type CartItems = {
         image: string,
         price: string,
         quantity: number,
-        option: string 
+        option?: string 
 }
 
 export type CartItem = {
@@ -52,5 +52,5 @@ export type CartItem = {
         img: string,
         price: string,
         quantity: number,
-        options: string 
+        options?: string 
 }
