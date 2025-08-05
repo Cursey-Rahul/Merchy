@@ -13,7 +13,7 @@ const Price = ( {product}: {product:Product}) => {
   const [selected, setSelected] = useState(0);
   const quantityStore = useQuantityStore((state) => state.setQuantity);
   const router = useRouter();
-  const { data: session } = useSession(); // ✅ use this instead of getSession()
+  const { data: session } = useSession(); 
 
  
   useEffect(() => {

@@ -1,5 +1,4 @@
 import React from 'react'
-import AutoSaveCart from './autoSave'
 
 const notification = () => {
   return (<>

@@ -1,3 +1,4 @@
+
 import Image from 'next/image'
 import React from 'react'
 import Price from '@/components/Price';
@@ -26,7 +27,6 @@ const productPage = async({
           <p className=' text-xl'>{item.description}</p>
           <Price product={item} />
        </div>
-
     </div>
   )
 }

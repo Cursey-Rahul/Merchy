@@ -6,11 +6,13 @@ type QuantityState = {
   setQuantity: (value: number) => void;
   increment: () => void;
   decrement: () => void;
+  fixQuantity: (value: number) => void;
 };
 
 export const useQuantityStore = create(persist<QuantityState>(
     (set) => ({
       quantity: 0, // default value
+      fixQuantity: (value) => set({ quantity: value }),
       setQuantity: (value) => set((state)=>({ quantity: state.quantity + value })),
       increment: () => set((state) => ({ quantity: state.quantity + 1 })),
       decrement: () =>

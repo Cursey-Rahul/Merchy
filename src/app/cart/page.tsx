@@ -1,17 +1,15 @@
-
 import Image from 'next/image'
 import React from 'react'
-import { Button } from '@/components/ui/button';
 import { CartItem } from '@/types/types';
-
+import CartProductChangeButton from '@/components/cartProductChangeButton';
 
 
 const GETDATA = async()=>{
   const data = await fetch("http://localhost:3000/api/cartitems")
   return data.json();
 }
+
 const CartPage = async() => {
-  
   const cartItems: CartItem[] = await GETDATA();
    const total = cartItems.reduce((sum, item) => {
     return sum + Number(item.price) * item.quantity;
@@ -24,7 +22,8 @@ const CartPage = async() => {
     style: "currency",
     currency: "INR",
   });
-  return (
+  
+    return (
     <div className='h-[calc(100vh-6rem)] md:h-[calc(100vh-8rem)] w-full flex flex-col text-red-500 md:flex-row' >
       <div className='h-1/2 md:h-full w-full flex flex-col overflow-y-scroll justify-center'>
         {cartItems.length > 0 ? (     
@@ -35,11 +34,9 @@ const CartPage = async() => {
                 <h2 className='font-bold text-l uppercase'>{item.title}</h2>
                 {item.options && <p className='capitalize'>{item.options}</p>}
               </div>
-              <span className='font-semibold'>${(Number(item.price) * item.quantity).toFixed(2)}</span>
+              <span className='font-semibold'>₹{(Number(item.price) * item.quantity).toFixed(2)}</span>
               <div className='flex flex-row items-center gap-4 '>
-                <Button variant="destructive" className=' text-xl flex items-center justify-center' >-</Button>
-                <span className='text-l font-semibold'>{item.quantity}</span>
-                <Button variant="destructive" className=' text-xl flex items-center justify-center'>+</Button>
+                <CartProductChangeButton item={item} quantity={quantity}/>
               </div>
             </div>
           ))
