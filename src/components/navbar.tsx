@@ -3,11 +3,12 @@ import Image from 'next/image'
 import Menu from './menu'
 import Link from 'next/link'
 import Shopingcart from './Shopingcart'
+
+
 import { signOut, useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Button } from './ui/button';
-
 const Header = () => {
   const { data: session} = useSession();
  
@@ -44,6 +45,8 @@ const Header = () => {
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuItem><Link href='/orders' className=' hover:underline hover:font-semibold'>My Orders</Link></DropdownMenuItem>
+    
+    <DropdownMenuItem><Link href='/admin' className=' hover:underline hover:font-semibold'>Admin Page</Link></DropdownMenuItem>
     <DropdownMenuItem><Button variant="destructive" onClick={() => signOut()}>Log Out</Button></DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>

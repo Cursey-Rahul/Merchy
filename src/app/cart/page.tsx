@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import { CartItem } from '@/types/types';
 import CartProductChangeButton from '@/components/cartProductChangeButton';
+import Link from 'next/link';
 
 
 const GETDATA = async()=>{
@@ -63,7 +64,11 @@ const CartPage = async() => {
             <p className='uppercase'>total(inc.gst)</p>
             <span className='font-extrabold'>{formattedTotal}</span>
           </div>
-          <button className='bg-red-500 w-max self-end ring-red-500 ring-1 text-white p-2 rounded-lg text-base text-nowrap uppercase px-14 mx-4' >checkout</button>
+          <div className='bg-red-500 w-max self-end ring-red-500 ring-1 text-white p-2 rounded-lg text-base text-nowrap uppercase px-14 mx-4'>
+            <Link href="/checkout">
+              <button className='text-white'>checkout</button>  
+            </Link>
+          </div>
       </div>
           
     </div>
