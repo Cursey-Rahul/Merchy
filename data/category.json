@@ -1,42 +1,52 @@
 [
   {
-   
-    "title": "North Indian",
-    "description": "Rich, creamy dishes like butter chicken, paneer tikka, and naan. Known for bold spices and dairy-based gravies.",
-    "img": "img5_tlbpus",
-    "colour": "white",
-    "slug": "north-indian"
+    "title": "Bhuvan Bam",
+    "description": "Comedy and sketches creator, known for BB Ki Vines on YouTube. Popular for humorous characters and relatable content.",
+    "img": "bhuvan",
+    "colour": "yellow",
+    "slug": "bhuvan-bam"
   },
   {
-   
-    "title": "South Indian",
-    "description": "Famous for dosas, idlis, and sambar. Features rice-based meals, coconut, curry leaves, and mustard seeds.",
-    "img": "img4_abrqhc",
-    "colour": "black",
-    "slug": "south-indian"
+    "title": "Mumbiker Nikhil",
+    "description": "Travel and lifestyle vlogger, famous for travel vlogs, motorcycles, and personal life insights.",
+    "img": "nikhil",
+    "colour": "blue",
+    "slug": "mumbiker-nikhil"
   },
   {
-
-   
-    "title": "East Indian",
-    "description": "Light and flavorful dishes like momos, fish curry, and sweets like rasgulla. Often includes mustard oil and rice.",
-    "img": "img2_zokccr",
-    "colour": "white",
-    "slug": "east-indian"
+    "title": "CarryMinati",
+    "description": "YouTube creator known for roast videos, gaming content, and high-energy commentary.",
+    "img": "carry",
+    "colour": "red",
+    "slug": "carryminati"
   },
   {
-   
-    "title": "West Indian",
-    "description": "Includes Gujarati, Rajasthani, and Maharashtrian cuisines. Offers spicy snacks, dhokla, and thalis.",
-    "img": "img1_f2ad0t",
-    "colour": "black",
-    "slug": "west-indian"
+    "title": "Sejal Kumar",
+    "description": "Fashion and lifestyle YouTuber, focuses on vlogs, styling tips, and college life experiences.",
+    "img": "sejal",
+    "colour": "pink",
+    "slug": "sejal-kumar"
   },
   {
-    "title": "Central Indian",
-    "description": "Staples like bhutte ka kees, poha, and dal bafla. A blend of flavors from neighboring regions.",
-    "img": "img3_zjlkhg",
-    "colour": "white",
-    "slug": "central-indian"
+    "title": "MostlySane (Prajakta Koli)",
+    "description": "Comedy and relatable sketches creator, highlights everyday situations with humor and charm.",
+    "img": "mostlysane",
+    "colour": "purple",
+    "slug": "mostlysane"
+  },
+  {
+    "title": "Sid",
+    "description": "Gaming and entertainment content creator, popular for live streams, gameplay, and humorous commentary.",
+    "img": "sid",
+    "colour": "green",
+    "slug": "sid"
+  },
+  {
+    "title": "Arashi",
+    "description": "Popular Japanese boy band known for music, performances, and entertainment across Asia.",
+    "img": "arashi",
+    "colour": "orange",
+    "slug": "arashi"
   }
+  
 ]

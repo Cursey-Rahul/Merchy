@@ -97,12 +97,15 @@ const removeOption = (index: number) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Category</SelectLabel>
-          <SelectItem value="north-indian">North Indian</SelectItem>
-          <SelectItem value="south-indian">South Indian</SelectItem>
-          <SelectItem value="east-indian">East Indian</SelectItem>
-          <SelectItem value="west-indian">West Indian</SelectItem>
-          <SelectItem value="central-indian">Central Indian</SelectItem>
+         <SelectLabel>Creator</SelectLabel>
+<SelectItem value="bhuvan-bam">Bhuvan Bam</SelectItem>
+<SelectItem value="mumbiker-nikhil">Mumbiker Nikhil</SelectItem>
+<SelectItem value="carryminati">CarryMinati</SelectItem>
+<SelectItem value="sejal-kumar">Sejal Kumar</SelectItem>
+<SelectItem value="mostlysane">MostlySane</SelectItem>
+<SelectItem value="sid">Sid</SelectItem>
+<SelectItem value="arashi">Arashi</SelectItem>
+
         </SelectGroup>
       </SelectContent>
     </Select>

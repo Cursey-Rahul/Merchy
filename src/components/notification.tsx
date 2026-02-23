@@ -2,7 +2,9 @@ import React from 'react'
 
 const notification = () => {
   return (<>
-    <div className='h-12 text-white bg-red-500 px-4 py-7 flex text-center items-center justify-center cursor-pointer text-sm md:text-base '>Free delivery for all orders over ₹200. Order your food now!</div>
+    <div className=' h-14 text-white bg-red-500 px-4 py-7 flex text-center items-center justify-center cursor-pointer text-sm  lg:text-lg'>
+  Free shipping on all merch from your favorite creators! Grab them before they’re gone!
+</div>
     </>
   )
 }

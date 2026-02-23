@@ -7,7 +7,7 @@ const footer = () => {
 
       <div className=' sm:text-sm md:text-lg uppercase font-semibold'>
         <Link href='/'>
-        ultimate chinese food
+        Merchy
         </Link>
       </div>
       <div className='text-sm uppercase'>

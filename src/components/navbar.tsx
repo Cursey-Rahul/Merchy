@@ -14,18 +14,18 @@ const Header = () => {
  
   return (
  
-    <div className='h-12  bg-white text-red-500 flex justify-between px-4 items-center border-b-2 border-b-red-500 md:h-20 lg:px-14'>
+    <div className='h-12  bg-white text-red-500 flex justify-between px-4 items-center border-b-2 border-b-red-500 md:h-20 lg:px-14 '>
       <div className='hidden md:flex items-center gap-5 lg:gap-6 text-l uppercase flex-1 lg:text-xl '>
         <Link href='/' className=' hover:underline hover:font-semibold'>Homepage</Link>
-        <Link href='/menu' className=' hover:underline hover:font-semibold'>Menu</Link>
+        <Link href='/menu' className=' hover:underline hover:font-semibold'>Creators</Link>
         <Link href='/contact' className=' hover:underline hover:font-semibold'>contact</Link>
       </div>
 
 
 
-      <div className='text-xl uppercase md:font-bold font-semibold flex-1 md:text-center'>
+      <div className='text-xl uppercase md:font-bold font-semibold flex-1 md:text-center lg:text-2xl'>
         <Link href='/'>
-        crimps foods
+       MERCHY
         </Link>
       </div>
 

@@ -19,7 +19,7 @@ const Featured = async() => {
         <div key={product.id} className='w-screen h-[60vh] flex flex-col items-center justify-around py-4 px-4 text-center hover:bg-fuchsia-50 transition-all duration-300 md:w-[50vw] lg:w-[33vw] lg:h-[90vh] md:h-[75vh]'>
         <div className='relative w-full flex-1 '>  
            {/*image*/}
-        <Image src={product.img}alt=''fill className='object-contain hover:rotate-[60deg] duration-500 transition-all'/>
+        <Image src={product.img}alt=''fill className='object-contain hover:scale-105 duration-500 transition-transform'/>
         </div> 
       <div className=' text-red-500 flex flex-1 flex-col gap-4 items-center justify-center'>
         {/*texts*/}
