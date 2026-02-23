@@ -10,8 +10,9 @@ import { faAmazonPay, faApplePay } from "@fortawesome/free-brands-svg-icons";
 import { faBuildingColumns } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link';
 
-const checkout = ({total}: {total:number}) => {
-    total = 100;
+const checkout = () => {
+  const total = 100;
+
   return (
     <div className='flex flex-col items-center justify-center h-screen p-32 '>
         <div className='flex flex-col justify-center w-full  p-12 bg-gray-200 rounded-lg shadow-md gap-5'>
