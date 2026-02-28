@@ -4,7 +4,7 @@ import React from 'react'
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
-  const response = await fetch(`http://localhost:3000/api/order`);
+  const response = await fetch(`/api/order`);
   return response.json();
 }
 

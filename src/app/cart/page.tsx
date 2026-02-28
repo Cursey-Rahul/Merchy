@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 const GETDATA = async () => {
-  const data = await fetch("http://localhost:3000/api/cartitems")
+  const data = await fetch("/api/cartitems")
   return data.json();
 }
 

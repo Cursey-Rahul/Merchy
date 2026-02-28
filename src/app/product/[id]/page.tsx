@@ -5,7 +5,7 @@ import { Product } from '@/types/types';
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/singleproduct?id=${id}`);
+  const response = await fetch(`/api/singleproduct?id=${id}`);
   const data = await response.json();
   return data;
 }
