@@ -6,22 +6,22 @@ const slides = [
   { 
     id: 1,
     title: "Show your mood with the AngryPrash keychain — perfect for fans who love bold vibes!",
-    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509240/prashkey_mq1460.png"
+    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509240/prashkey.png"
   },
   { 
     id: 2,
     title: "Rock the streets with the BoltCut cap — edgy style for every adventure.",
-    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509237/crow_cap_houcbc.png"
+    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509237/crow_cap.png"
   },
   { 
     id: 3,
     title: "Step into the game with the Devil May Cry-themed Bunny Helmet — playful, fierce, and iconic.",
-    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509234/bunnyhelmet_obrkcx.png"
+    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509234/bunnyhelmet.png"
   },
   { 
     id: 4,
     title: "Strum in style with the Arashi electric guitar — perfect for fans who want to rock like J-Pop legends.",
-    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509231/Gemini_Generated_Image_hhq37jhhq37jhhq3_qchxew.png"
+    img: "https://res.cloudinary.com/dq5vadic7/image/upload/v1759509231/arashiguitar.png"
   }
 ];
 
