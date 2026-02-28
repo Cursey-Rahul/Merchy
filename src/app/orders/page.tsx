@@ -4,7 +4,8 @@ import React from 'react'
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
-  const response = await fetch(`/api/order`);
+     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const response = await fetch(`${baseUrl}/api/order`);
   return response.json();
 }
 

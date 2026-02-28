@@ -5,7 +5,8 @@ import { Product } from '@/types/types';
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (id: string) => {
-  const response = await fetch(`/api/singleproduct?id=${id}`);
+     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const response = await fetch(`${baseUrl}/api/singleproduct?id=${id}`);
   const data = await response.json();
   return data;
 }

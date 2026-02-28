@@ -5,7 +5,8 @@ import { Product } from '@/types/types'
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (category: string) => {
-  const response = await fetch(`/api/products?category=${category}`);
+     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const response = await fetch(`${baseUrl}/api/products?category=${category}`);
   return response.json();
 }
 

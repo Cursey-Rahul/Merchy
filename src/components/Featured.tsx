@@ -3,7 +3,8 @@ import Image from 'next/image'
 import React from 'react'
 
 const GETDATA=async()=>{
-  const data= await fetch("/api/products")
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const data = await fetch(`${baseUrl}/api/products`)
   return data.json()
 }
 
