@@ -19,7 +19,7 @@ const categoryPage = async({
       {foodProducts.map((items)=>(
         <Link href={`/product/${items.id}`} key={items.id} className='h-[60vh] w-full md:w-1/2 lg:w-1/3 p-4 border-b-2 border-r-2 border-red-500 hover:bg-fuchsia-50 transition-all duration-300'>
             <div className='relative h-[85%] '>
-            <Image className='object-contain p-4 hover:scale-105 duration-500 transition-transform' src={items.img} alt='' fill/>
+            <Image className='object-contain p-4 hover:scale-105 duration-500 transition-transform' src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${items.img}`}alt='' fill/>
             </div>
           <div className='flex justify-between px-4 items-center text-red-500'>
           <h1 className='text-xl font-bold'>{items.title}</h1>

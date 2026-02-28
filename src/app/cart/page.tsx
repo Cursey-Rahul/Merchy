@@ -30,7 +30,7 @@ const CartPage = async() => {
         {cartItems.length > 0 ? (     
           cartItems.map((item) => (
             <div key={item.id} className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'>
-              <Image src={item.img} alt='' width={100} height={100} />
+              <Image src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`} alt='' width={100} height={100} />
               <div>
                 <h2 className='font-bold text-l uppercase'>{item.title}</h2>
                 {item.options && <p className='capitalize'>{item.options}</p>}

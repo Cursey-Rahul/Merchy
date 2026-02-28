@@ -1,26 +1,20 @@
+import prisma from "@/utils/connect";
+import fs from "fs";
 
-import prisma from '@/utils/connect';
-import fs from 'fs';
+async function seedCategories() {
+  const file = fs.readFileSync("data/Category.json","utf-8");
+  const categories = JSON.parse(file);
 
-const seedCategory = async () => {
-  const file = fs.readFileSync('data/Category.json', 'utf-8');
-  const categorys= JSON.parse(file);
-
-  for (const category of categorys) {
-    await prisma.category.create({
-      data: category,
-    });
-  }
-
-  console.log('✅ Category seeded!');
-};
-
-seedCategory()
-  .catch((err) => {
-    console.error(err);
-  })
-  .finally(() => {
-    prisma.$disconnect();
+  await prisma.category.createMany({
+    data: categories,
+    skipDuplicates: true
   });
+
+  console.log("Categories seeded");
+}
+
+seedCategories()
+.catch(console.error)
+.finally(()=> prisma.$disconnect());
 //npx tsx scripts/seedCategory.ts
 //npx tsx scripts/seedProducts.ts

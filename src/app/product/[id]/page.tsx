@@ -20,7 +20,7 @@ const productPage = async({
     <div className='p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-center items-center md:flex-row '>
       
         <div className='relative w-full md:w-1/2 h-1/2'>
-          <Image src={item.img} alt=''fill className='object-contain' />
+          <Image src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`} alt=''fill className='object-contain' />
         </div>
         <div className=' text-red-400 w-full md:w-1/2 p-5 flex flex-col justify-center text-center items-center gap-8'>
           <h1 className='font-bold text-3xl'>{item.title}</h1>
