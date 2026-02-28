@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 
 const GETDATA=async()=>{
-  const data= await fetch("http://localhost:3000/api/products")
+  const data= await fetch("/api/products")
   return data.json()
 }
 
