@@ -1,0 +1,21 @@
+# .eslintignore
+
+# Prisma generated files
+src/generated
+node_modules/.prisma
+node_modules/@prisma
+
+# Next.js
+.next
+out
+
+# Dependencies
+node_modules
+
+# Build files
+dist
+build
+
+# Environment
+.env
+.env.local

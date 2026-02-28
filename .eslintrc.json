@@ -1,0 +1,11 @@
+{
+  "extends": "next/core-web-vitals",
+  "ignorePatterns": [
+    "src/generated/**",
+    "node_modules/.prisma/**",
+    "node_modules/@prisma/**",
+    ".next/**",
+    "dist/**",
+    "build/**"
+  ]
+}
