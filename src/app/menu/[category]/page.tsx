@@ -3,30 +3,37 @@ import React from 'react'
 import Image from 'next/image';
 import { Product } from '@/types/types'
 
-const GETDATA= async(category: string)=>{
+const GETDATA = async (category: string) => {
   const response = await fetch(`http://localhost:3000/api/products?category=${category}`);
   return response.json();
 }
 
-const categoryPage = async({
+const categoryPage = async ({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) => {
-  const foodProducts: Product[] = await GETDATA(params.category);
+  const { category } = await params;
+  const foodProducts: Product[] = await GETDATA(category);
+  
   return (
     <div className='flex flex-wrap h-full '>
-      {foodProducts.map((items)=>(
+      {foodProducts.map((items) => (
         <Link href={`/product/${items.id}`} key={items.id} className='h-[60vh] w-full md:w-1/2 lg:w-1/3 p-4 border-b-2 border-r-2 border-red-500 hover:bg-fuchsia-50 transition-all duration-300'>
-            <div className='relative h-[85%] '>
-            <Image className='object-contain p-4 hover:scale-105 duration-500 transition-transform' src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${items.img}`}alt='' fill/>
-            </div>
-          <div className='flex justify-between px-4 items-center text-red-500'>
-          <h1 className='text-xl font-bold'>{items.title}</h1>
-          <div className='flex justify-end items-center'>
-          <span className='text-xl'>${items.price}</span>
-          <button className='bg-red-500 ml-2 text-white p-2 rounded-lg text-base uppercase'>add to cart</button>
+          <div className='relative h-[85%] '>
+            <Image 
+              className='object-contain p-4 hover:scale-105 duration-500 transition-transform' 
+              src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${items.img}`}
+              alt={items.title}
+              fill
+            />
           </div>
+          <div className='flex justify-between px-4 items-center text-red-500'>
+            <h1 className='text-xl font-bold'>{items.title}</h1>
+            <div className='flex justify-end items-center'>
+              <span className='text-xl'>${items.price}</span>
+              <button className='bg-red-500 ml-2 text-white p-2 rounded-lg text-base uppercase'>add to cart</button>
+            </div>
           </div>
         </Link>
       ))}
