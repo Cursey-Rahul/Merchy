@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import Price from '@/components/Price';
 import { Product } from '@/types/types';
+export const dynamic = 'force-dynamic';
 
 const GETDATA = async (id: string) => {
   const response = await fetch(`http://localhost:3000/api/singleproduct?id=${id}`);

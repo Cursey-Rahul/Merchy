@@ -4,6 +4,7 @@ import { CartItem } from '@/types/types';
 import CartProductChangeButton from '@/components/cartProductChangeButton';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
 const GETDATA = async () => {
   const data = await fetch("http://localhost:3000/api/cartitems")
   return data.json();

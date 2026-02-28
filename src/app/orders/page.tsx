@@ -1,6 +1,7 @@
 import { getSession } from '@/lib/auth';
 import { Order } from '@/types/types';
 import React from 'react'
+export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
   const response = await fetch(`http://localhost:3000/api/order`);

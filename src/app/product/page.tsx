@@ -2,7 +2,7 @@ import { Product } from '@/types/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-
+export const dynamic = 'force-dynamic';
 const GETDATA= async() => {
   const response = await fetch(`http://localhost:3000/api/all-products`);
   return response.json();
