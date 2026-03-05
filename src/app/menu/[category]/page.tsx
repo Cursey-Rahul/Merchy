@@ -25,7 +25,7 @@ const categoryPage = async ({
           <div className='relative h-[85%] '>
             <Image 
               className='object-contain p-4 hover:scale-105 duration-500 transition-transform' 
-              src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${items.img}`}
+              src={items.img}
               alt={items.title}
               fill
             />
