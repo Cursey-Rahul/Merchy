@@ -1,4 +1,3 @@
-
 import Image from 'next/image'
 import React from 'react'
 import Price from '@/components/Price';
@@ -7,7 +6,7 @@ import { Product } from '@/types/types';
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (id: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL 
+  const baseUrl = 'https://merchy-blond.vercel.app'
   try {
     const response = await fetch(`${baseUrl}/api/singleproduct?id=${id}`, {
       cache: 'no-store'
@@ -33,14 +32,6 @@ const productPage = async ({
 }) => {
   const { id } = await params;
   const item: Product | null = await GETDATA(id);
-  
-  if (!item) {
-    return (
-      <div className='p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-center items-center'>
-        <h1 className='text-2xl font-bold'>Product not found</h1>
-      </div>
-    )
-  }
   
   if (!item) {
     return (
