@@ -6,9 +6,10 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 const GETDATA = async () => {
-     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
   const data = await fetch(`${baseUrl}/api/cartitems`)
-  return data.json();
+  const result = await data.json();
+  return Array.isArray(result) ? result : [];
 }
 
 const CartPage = async () => {
