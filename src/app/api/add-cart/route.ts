@@ -17,16 +17,23 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "Missing data" }, { status: 400 });
     }
 
+    // Get product details
+    const product = await prisma.product.findUnique({
+      where: { id: productId }
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         userEmail: user,
         productId: productId,
-        options,
+        options: JSON.stringify(options), // Match options as JSON string
       },
     });
 
-    console.log("Existing item:", existingItem);
-    
     if (existingItem) {
       if (existingItem.quantity + 1 >= 16) {
         return NextResponse.json({ error: "Maximum quantity reached" }, { status: 400 });
@@ -38,6 +45,19 @@ export async function PATCH(req: Request) {
           },
         });
       }
+    } else {
+      // Create new cart item
+      await prisma.cartItem.create({
+        data: {
+          userEmail: user,
+          productId: productId,
+          options: JSON.stringify(options),
+          quantity: 1,
+          img: product.img || "",
+          price: product.price,
+          title: product.title,
+        },
+      });
     }
     return NextResponse.json({ success: true });
   } catch (error) {

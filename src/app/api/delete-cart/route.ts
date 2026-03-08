@@ -21,14 +21,12 @@ export async function PATCH(req: Request) {
       where: {
         userEmail: user,
         productId: productId,
-        options,
+        options: JSON.stringify(options),
       },
     });
 
-    console.log("Existing item:", existingItem);
-    
     if (existingItem) {
-      if (existingItem.quantity - 1 === 0) {
+      if (existingItem.quantity <= 1) {
         await prisma.cartItem.delete({
           where: { id: existingItem.id },
         });
@@ -40,6 +38,8 @@ export async function PATCH(req: Request) {
           },
         });
       }
+    } else {
+      return NextResponse.json({ error: "Item not found in cart" }, { status: 404 });
     }
     return NextResponse.json({ success: true });
   } catch (error) {

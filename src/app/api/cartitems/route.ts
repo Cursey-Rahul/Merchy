@@ -14,14 +14,6 @@ export const GET = async () => {
     const items = await prisma.cartItem.findMany({
       where: {
         userEmail: user
-      },
-      include: {
-        product: {
-          select: {
-            title: true,
-            creatorSlug: true
-          }
-        }
       }
     })
     return new NextResponse(JSON.stringify(items), { status: 200 });

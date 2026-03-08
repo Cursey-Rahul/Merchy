@@ -1,38 +1,56 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/connect"; 
+import { prisma } from "@/utils/connect";
+import { getSession } from "@/lib/auth";
+import { Prisma } from "@prisma/client";
 
 export async function POST(req: Request) {
   try {
-    const { userEmail, productId, title, img, price, quantity, options } = await req.json();
+    const session = await getSession()
+    const user = session?.user?.email
+    
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (!userEmail || !productId || !title || !img || !price || !quantity) {
+    const { productId, title, img, price, quantity, options } = await req.json();
+
+    if (!productId || !title || !img || !price || !quantity) {
       return NextResponse.json({ error: "Missing data" }, { status: 400 });
+    }
+
+    // Validate quantity
+    if (quantity < 1 || quantity > 15) {
+      return NextResponse.json({ error: "Invalid quantity" }, { status: 400 });
     }
 
     const existingItem = await prisma.cartItem.findFirst({
       where: {
-        userEmail,
+        userEmail: user,
         productId,
-        options: options || '',
+        options: JSON.stringify(options) || '',
       },
     });
 
     if (existingItem) {
+      const newQuantity = existingItem.quantity + quantity;
+      if (newQuantity > 15) {
+        return NextResponse.json({ error: "Maximum quantity exceeded" }, { status: 400 });
+      }
       await prisma.cartItem.update({
         where: { id: existingItem.id },
         data: {
-          quantity: existingItem.quantity + quantity,
+          quantity: newQuantity,
         },
       });
     } else {
       await prisma.cartItem.create({
         data: {
-          userEmail,
+          userEmail: user,
           productId,
-          options: options || '',
+          options: JSON.stringify(options) || '',
           quantity,
           title,
-          price: String(price),
+          price: new Prisma.Decimal(price),
           img,
         },
       });

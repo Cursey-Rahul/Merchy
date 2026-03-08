@@ -22,8 +22,7 @@ const CartPage = async () => {
   const quantity = cartItems.reduce((sum, items) => {
     return sum + items.quantity;
   }, 0);
-  
-  // Format the total price in Indian Rupees
+
   const formattedTotal = total.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
@@ -42,11 +41,11 @@ const CartPage = async () => {
                 src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`} 
                 alt={item.title}
                 width={100} 
-                height={100} 
+                height={100}
+                unoptimized
               />
               <div>
                 <h2 className='font-bold text-l uppercase'>{item.title}</h2>
-                {item.options && <p className='capitalize'>{item.options}</p>}
               </div>
               <span className='font-semibold'>₹{(Number(item.price) * item.quantity).toFixed(2)}</span>
               <div className='flex flex-row items-center gap-4'>
