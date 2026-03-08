@@ -7,7 +7,7 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const baseUrl ='https://merchy-blond.vercel.app'
   try {
     console.log('Fetching from:', `${baseUrl}/api/cartitems`)
     const data = await fetch(`${baseUrl}/api/cartitems`)
