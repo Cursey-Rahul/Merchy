@@ -5,15 +5,33 @@ import CartProductChangeButton from '@/components/cartProductChangeButton';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
+
 const GETDATA = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-  const data = await fetch(`${baseUrl}/api/cartitems`)
-  const result = await data.json();
-  return Array.isArray(result) ? result : [];
+  try {
+    const data = await fetch(`${baseUrl}/api/cartitems`, {
+      cache: 'no-store'
+    })
+    const result = await data.json();
+    console.log('Cart items:', result)
+    return Array.isArray(result) ? result : [];
+  } catch (error) {
+    console.error('Error fetching cart:', error)
+    return [];
+  }
 }
 
 const CartPage = async () => {
   const cartItems: CartItem[] = await GETDATA();
+  console.log('CartItems length:', cartItems.length)
+  
+  if (!cartItems || cartItems.length === 0) {
+    return (
+      <div className='p-8 text-center min-h-[calc(100vh-6rem)]'>
+        <h1 className='text-2xl font-bold'>Your cart is empty</h1>
+      </div>
+    )
+  }
   
   const total = cartItems.reduce((sum, item) => {
     return sum + Number(item.price) * item.quantity;
@@ -31,31 +49,27 @@ const CartPage = async () => {
   return (
     <div className='h-[calc(100vh-6rem)] md:h-[calc(100vh-8rem)] w-full flex flex-col text-red-500 md:flex-row'>
       <div className='h-1/2 md:h-full w-full flex flex-col overflow-y-scroll justify-center'>
-        {cartItems.length > 0 ? (
-          cartItems.map((item) => (
-            <div 
-              key={item.id} 
-              className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'
-            >
-              <Image 
-                src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`} 
-                alt={item.title}
-                width={100} 
-                height={100}
-                unoptimized
-              />
-              <div>
-                <h2 className='font-bold text-l uppercase'>{item.title}</h2>
-              </div>
-              <span className='font-semibold'>₹{(Number(item.price) * item.quantity).toFixed(2)}</span>
-              <div className='flex flex-row items-center gap-4'>
-                <CartProductChangeButton item={item} quantity={quantity} />
-              </div>
+        {cartItems.map((item) => (
+          <div 
+            key={item.id} 
+            className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'
+          >
+            <Image 
+              src={item.img}
+              alt={item.title}
+              width={100} 
+              height={100}
+              unoptimized
+            />
+            <div>
+              <h2 className='font-bold text-l uppercase'>{item.title}</h2>
             </div>
-          ))
-        ) : (
-          <p className='text-center text-lg font-semibold'>Your cart is empty</p>
-        )}
+            <span className='font-semibold'>₹{(Number(item.price) * item.quantity).toFixed(2)}</span>
+            <div className='flex flex-row items-center gap-4'>
+              <CartProductChangeButton item={item} quantity={quantity} />
+            </div>
+          </div>
+        ))}
       </div>
 
       <div className='h-1/2 md:h-full bg-fuchsia-50 w-full flex flex-col justify-center text-l font-medium md:w-[45%]'>
