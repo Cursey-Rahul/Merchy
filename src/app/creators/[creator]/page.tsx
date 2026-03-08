@@ -6,21 +6,29 @@ import { Product } from '@/types/types'
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (creator: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-  const response = await fetch(`${baseUrl}/api/products?creator=${creator}`);
-  return response.json();
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+    const response = await fetch(`${baseUrl}/api/products?creator=${creator}`, {
+      cache: 'no-store'
+    });
+    
+    if (!response.ok) {
+      return []
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching products:', error)
+    return []
+  }
 }
 
-const CreatorPage = async ({
-  params,
-}: {
-  params: Promise<{ creator: string }>;
-}) => {
+const CreatorProductsPage = async ({ params }: { params: Promise<{ creator: string }> }) => {
   const { creator } = await params;
   const foodProducts: Product[] = await GETDATA(creator);
   
   if (!foodProducts || foodProducts.length === 0) {
-    return <div className='p-8 text-center'>No products from this creator</div>
+    return <div className='p-8 text-center min-h-[calc(100vh-6rem)]'>No products from this creator</div>
   }
   
   return (
@@ -54,4 +62,4 @@ const CreatorPage = async ({
   )
 }
 
-export default CreatorPage
+export default CreatorProductsPage

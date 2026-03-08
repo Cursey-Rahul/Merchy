@@ -5,16 +5,30 @@ import React from 'react'
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-  const response = await fetch(`${baseUrl}/api/creators`)
-  return response.json();
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+    const response = await fetch(`${baseUrl}/api/creators`, {
+      cache: 'no-store'
+    })
+    
+    if (!response.ok) {
+      console.error('API error:', response.status)
+      return []
+    }
+    
+    const data = await response.json()
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('Error fetching creators:', error)
+    return []
+  }
 }
 
-const MenuPage = async () => {
+const CreatorsPage = async () => {
   const creators: Creator[] = await GETDATA();
   
   if (!creators || creators.length === 0) {
-    return <div className='p-8 text-center'>No creators available</div>
+    return <div className='p-8 text-center min-h-[calc(100vh-6rem)]'>No creators available</div>
   }
 
   return (
@@ -22,20 +36,19 @@ const MenuPage = async () => {
       {creators.map((creator) => (
         <Link 
           key={creator.id} 
-          href={`/menu/${creator.slug}`} 
-          className='w-full bg-cover h-[20vh] sm:h-[49vh] p-8 md:h-[49vh] flex md:justify-center xl:justify-start' 
+          href={`/creators/${creator.slug}`} 
+          className='w-full bg-cover h-[20vh] sm:h-[49vh] p-8 md:h-[49vh] flex md:justify-center xl:justify-start relative group overflow-hidden rounded-lg' 
           style={{ backgroundImage: `url(${creator.image})` }}
         >
-        
-          {/* <div className='w-1/2 flex flex-col items-center text-center justify-center gap-4'>
-            <h1 className='text-xl font-bold md:text-3xl lg:text-4xl text-white'>{creator.title}</h1>
-            <p className='text-white'>{creator.description}</p>
-            <button className='hidden md:block bg-red-500 text-white p-2 rounded-lg uppercase'>explore</button>
-          </div> */}
+          <div className='absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all'></div>
+          <div className='relative z-10 flex flex-col justify-end w-full'>
+            <h2 className='text-white font-bold text-2xl md:text-3xl mb-2'>{creator.title}</h2>
+            <p className='text-white text-sm line-clamp-2'>{creator.description}</p>
+          </div>
         </Link>
       ))}
     </div>
   )
 }
 
-export default MenuPage
+export default CreatorsPage
