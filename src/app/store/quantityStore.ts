@@ -11,18 +11,17 @@ type QuantityState = {
 
 export const useQuantityStore = create(persist<QuantityState>(
     (set) => ({
-      quantity: 0, // default value
-      fixQuantity: (value) => set({ quantity: value }),
-      setQuantity: (value) => set((state)=>({ quantity: state.quantity + value })),
+      quantity: 0,
+      fixQuantity: (value) => set({ quantity: Math.max(0, value) }), // Prevent negative
+      setQuantity: (value) => set({ quantity: value }), // SET the value, not add
       increment: () => set((state) => ({ quantity: state.quantity + 1 })),
       decrement: () =>
         set((state) => ({
-          quantity: Math.max(0, state.quantity - 1), // minimum of 1
+          quantity: Math.max(0, state.quantity - 1),
         })),
-    
     }),
     {
-      name: 'quantity-storage', // key in localStorage
+      name: 'quantity-storage',
     }
   )
 );
