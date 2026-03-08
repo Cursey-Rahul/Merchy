@@ -30,7 +30,13 @@ const GETDATA = async () => {
         }
       }
     })
-    return items;
+    
+    // Format items to match API response
+    return items.map(item => ({
+      ...item,
+      price: item.price.toString(),
+      img: `https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`
+    }));
   } catch (error) {
     console.error('Error fetching cart items:', error)
     return [];
@@ -47,7 +53,7 @@ const CartPage = async () => {
   const quantity = cartItems.reduce((sum, items) => {
     return sum + items.quantity;
   }, 0);
-  
+
   const formattedTotal = total.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
@@ -63,10 +69,11 @@ const CartPage = async () => {
               className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'
             >
               <Image 
-                src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`} 
+                src={item.img}
                 alt={item.title}
                 width={100} 
-                height={100} 
+                height={100}
+                unoptimized
               />
               <div>
                 <h2 className='font-bold text-l uppercase'>{item.title}</h2>
