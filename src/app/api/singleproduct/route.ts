@@ -6,7 +6,12 @@ export const GET = async (req: NextRequest) => {
   const id = searchParams.get('id');
   
   if (!id) {
-    return new NextResponse(JSON.stringify({ message: "Product ID is required." }), { status: 400 });
+    return new NextResponse(JSON.stringify({ message: "Product ID is required." }), { 
+      status: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
   }
   
   try {
@@ -24,12 +29,27 @@ export const GET = async (req: NextRequest) => {
     })
     
     if (!product) {
-      return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
+      return new NextResponse(JSON.stringify({ message: "Product not found" }), { 
+        status: 404,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        }
+      });
     }
     
-    return new NextResponse(JSON.stringify(product), { status: 200 });
+    return new NextResponse(JSON.stringify(product), { 
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
   } catch (error) {
     console.error(error);
-    return new NextResponse(JSON.stringify({ message: "Error fetching product" }), { status: 500 });
+    return new NextResponse(JSON.stringify({ message: "Error fetching product" }), { 
+      status: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
   }
 }

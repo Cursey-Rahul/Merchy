@@ -7,7 +7,7 @@ import { Product } from '@/types/types';
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (id: string) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL 
   try {
     const response = await fetch(`${baseUrl}/api/singleproduct?id=${id}`, {
       cache: 'no-store'
