@@ -1,28 +1,25 @@
 import { Creator } from '@/types/types';
 import Link from 'next/link'
 import React from 'react'
+import { prisma } from '@/utils/connect'
 
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-    console.log('Fetching from:', `${baseUrl}/api/creators`)
-    
-    const response = await fetch(`${baseUrl}/api/creators`, {
-      cache: 'no-store'
+    // Query database directly instead of fetching API
+    const creators = await prisma.creator.findMany({
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        image: true
+      },
+      orderBy: { createdAt: 'desc' }
     })
     
-    console.log('Response status:', response.status)
-    
-    if (!response.ok) {
-      console.error('API error:', response.status)
-      return []
-    }
-    
-    const data = await response.json()
-    console.log('Creators data:', data)
-    return Array.isArray(data) ? data : []
+    return creators
   } catch (error) {
     console.error('Error fetching creators:', error)
     return []
@@ -32,13 +29,11 @@ const GETDATA = async () => {
 const CreatorsPage = async () => {
   const creators: Creator[] = await GETDATA();
   
-  console.log('Creators in page:', creators)
-  
   if (!creators || creators.length === 0) {
     return (
       <div className='p-8 text-center min-h-[calc(100vh-6rem)]'>
         <h1 className='text-2xl font-bold mb-4'>No creators available</h1>
-        <p className='text-gray-600'>Check back soon!</p>
+        <p className='text-gray-600'>Sign up as a creator to get started!</p>
       </div>
     )
   }

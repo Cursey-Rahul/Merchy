@@ -2,21 +2,16 @@ import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image';
 import { Product } from '@/types/types'
+import { prisma } from '@/utils/connect'
 
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async (creator: string) => {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-    const response = await fetch(`${baseUrl}/api/products?creator=${creator}`, {
-      cache: 'no-store'
-    });
-    
-    if (!response.ok) {
-      return []
-    }
-    
-    return response.json();
+    const products = await prisma.product.findMany({
+      where: { creatorSlug: creator }
+    })
+    return products
   } catch (error) {
     console.error('Error fetching products:', error)
     return []
@@ -28,7 +23,11 @@ const CreatorProductsPage = async ({ params }: { params: Promise<{ creator: stri
   const foodProducts: Product[] = await GETDATA(creator);
   
   if (!foodProducts || foodProducts.length === 0) {
-    return <div className='p-8 text-center min-h-[calc(100vh-6rem)]'>No products from this creator</div>
+    return (
+      <div className='p-8 text-center min-h-[calc(100vh-6rem)]'>
+        <h1 className='text-2xl font-bold mb-4'>No products from this creator</h1>
+      </div>
+    )
   }
   
   return (
@@ -50,7 +49,7 @@ const CreatorProductsPage = async ({ params }: { params: Promise<{ creator: stri
           <div className='flex justify-between px-4 items-center text-red-500'>
             <h1 className='text-xl font-bold'>{items.title}</h1>
             <div className='flex justify-end items-center gap-2'>
-              <span className='text-xl'>${items.price}</span>
+            <span className='text-xl'>${items.price.toString()}</span>
               <button className='bg-red-500 text-white p-2 rounded-lg text-base uppercase hover:bg-red-600'>
                 add to cart
               </button>
