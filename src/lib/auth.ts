@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
   
   callbacks: {
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token) {
         session.user.id = token.id as string
         session.user.userType = token.userType as string
         session.user.isAdmin = token.isAdmin as boolean
@@ -29,11 +29,20 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
-        token.userType = user.userType
-        token.isAdmin = user.isAdmin
+        token.userType = user.userType || 'user'
+        token.isAdmin = user.isAdmin || false
+      } else if (token.id) {
+        // Fetch user from DB on subsequent calls
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string }
+        })
+        if (dbUser) {
+          token.userType = dbUser.userType
+          token.isAdmin = dbUser.isAdmin
+        }
       }
       return token
     }
