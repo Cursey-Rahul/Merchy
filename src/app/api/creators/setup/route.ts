@@ -5,83 +5,75 @@ import { NextRequest, NextResponse } from 'next/server'
 export const POST = async (req: NextRequest) => {
   try {
     const session = await getSession()
+    console.log('Session in setup:', session?.user?.email)
     
     if (!session?.user?.email) {
+      console.log('No session found')
       return new NextResponse(
-        JSON.stringify({ error: 'Unauthorized' }), 
+        JSON.stringify({ error: 'Unauthorized - No session' }), 
         { status: 401 }
       )
     }
 
-    const { title, description, image } = await req.json()
+    const body = await req.json()
+    console.log('Body received:', { title: body.title, description: body.description, imageSize: body.image?.length })
+    
+    const { title, description, image } = body
 
     if (!title || !description || !image) {
+      console.log('Missing fields:', { title: !!title, description: !!description, image: !!image })
       return new NextResponse(
         JSON.stringify({ error: 'Missing required fields' }), 
         { status: 400 }
       )
     }
 
+    console.log('Finding user with email:', session.user.email)
+    
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       include: { creator: true }
     })
 
-    if (!user?.creator) {
+    console.log('User:', user?.email, 'Creator:', user?.creator?.id)
+
+    if (!user) {
       return new NextResponse(
-        JSON.stringify({ error: 'Creator profile not found' }), 
+        JSON.stringify({ error: 'User not found' }), 
         { status: 404 }
       )
     }
 
-    // Upload image
-    let imageUrl = image
-    if (image.startsWith('data:')) {
-      imageUrl = await uploadToCloudinary(image)
+    if (!user.creator) {
+      return new NextResponse(
+        JSON.stringify({ error: 'Creator profile not found - User must select creator role first' }), 
+        { status: 404 }
+      )
     }
 
+    console.log('Updating creator with id:', user.creator.id)
+
     const updatedCreator = await prisma.creator.update({
-      where: { userId: user.id },
+      where: { id: user.creator.id },
       data: {
         title,
         description,
-        image: imageUrl
+        image
       }
     })
+
+    console.log('Creator updated successfully:', updatedCreator.id)
 
     return new NextResponse(JSON.stringify(updatedCreator), { status: 200 })
   } catch (error) {
     console.error('Setup error:', error)
+    const errorMessage = error instanceof Error ? error.message : String(error)
     return new NextResponse(
-      JSON.stringify({ error: String(error) }), 
+      JSON.stringify({ 
+        error: 'Failed to setup profile',
+        details: errorMessage
+      }), 
       { status: 500 }
     )
-  }
-}
-
-async function uploadToCloudinary(base64: string): Promise<string> {
-  try {
-    const formData = new FormData()
-    formData.append('file', base64)
-    formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET!)
-    formData.append('folder', 'creator-profiles')
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      {
-        method: 'POST',
-        body: formData
-      }
-    )
-
-    const data = await res.json()
-    if (data.error) {
-      console.error('Cloudinary error:', data.error)
-      return base64
-    }
-    return data.secure_url || base64
-  } catch (error) {
-    console.error('Upload error:', error)
-    return base64
   }
 }

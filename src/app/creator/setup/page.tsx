@@ -23,7 +23,6 @@ const CreatorSetupPage = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Convert to base64 for preview and upload
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string;
@@ -49,7 +48,6 @@ const CreatorSetupPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: session?.user?.email,
           title: formData.title,
           description: formData.description,
           image: formData.image
@@ -57,16 +55,17 @@ const CreatorSetupPage = () => {
       });
 
       const data = await response.json();
+      console.log('Setup response:', data, 'Status:', response.status)
 
       if (response.ok) {
         alert('Creator profile setup complete!');
         router.push('/creator/dashboard');
       } else {
-        alert(data.error || 'Failed to setup profile');
+        alert(`Error: ${data.error || 'Failed to setup profile'}${data.details ? ' - ' + data.details : ''}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error setting up profile');
+      alert(`Error setting up profile: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setLoading(false);
     }
