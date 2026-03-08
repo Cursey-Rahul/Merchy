@@ -10,24 +10,21 @@ const LoginPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.user) {
-      // Check if user already has a userType
-      if (session.user.userType) {
-        // User already chose a role, send to home
-        router.push('/');
-      } else {
-        // User just signed in, ask them to choose role
+    if (status === 'authenticated' && session?.user?.email) {
+      console.log('Session:', session.user)
+      // If userType is not set, go to choose-role
+      if (!session.user.userType || session.user.userType === 'user') {
         router.push('/choose-role');
+      } else {
+        router.push('/');
       }
     }
   }, [session, status, router]);
 
-  // Show loading while checking session
   if (status === 'loading') {
     return <div className='h-[calc(100vh-6rem)] flex items-center justify-center'>Loading...</div>
   }
 
-  // If already logged in, redirect
   if (status === 'authenticated') {
     return <div className='h-[calc(100vh-6rem)] flex items-center justify-center'>Redirecting...</div>
   }
