@@ -5,10 +5,17 @@ import CartProductChangeButton from '@/components/cartProductChangeButton';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
+
 const GETDATA = async () => {
-     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-  const data = await fetch(`${baseUrl}/api/cartitems`)
-  return data.json();
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  try {
+    const data = await fetch(`${baseUrl}/api/cartitems`)
+    const result = await data.json();
+    return Array.isArray(result) ? result : [];
+  } catch (error) {
+    console.error('Error fetching cart items:', error)
+    return [];
+  }
 }
 
 const CartPage = async () => {
@@ -22,7 +29,6 @@ const CartPage = async () => {
     return sum + items.quantity;
   }, 0);
   
-  // Format the total price in Indian Rupees
   const formattedTotal = total.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
