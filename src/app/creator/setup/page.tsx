@@ -8,12 +8,14 @@ const CreatorSetupPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     title: session?.user?.name || '',
     description: '',
     image: ''
   });
   const [preview, setPreview] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -21,15 +23,52 @@ const CreatorSetupPage = () => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string;
         setPreview(result);
-        setFormData({ ...formData, image: result });
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const handleImageUpload = async () => {
+    if (!file) {
+      alert('Please select an image');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
+      formDataUpload.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'unsigned_preset');
+      formDataUpload.append('folder', 'creator-profiles');
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formDataUpload,
+        }
+      );
+
+      const data = await res.json();
+      
+      if (data.secure_url) {
+        setFormData({ ...formData, image: data.secure_url });
+        alert('Image uploaded successfully!');
+      } else {
+        alert('Failed to upload image');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Error uploading image');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -37,7 +76,7 @@ const CreatorSetupPage = () => {
     e.preventDefault();
     
     if (!formData.title || !formData.description || !formData.image) {
-      alert('Please fill all fields including image');
+      alert('Please fill all fields and upload image');
       return;
     }
 
@@ -110,47 +149,51 @@ const CreatorSetupPage = () => {
           {/* Brand Image Upload */}
           <div>
             <label className='block font-bold mb-2'>Brand Image (for menu) *</label>
-            <div className='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center'>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className='hidden'
-                id="image-input"
-                required
-              />
-              <label 
-                htmlFor="image-input" 
-                className='cursor-pointer block'
-              >
-                <div className='text-gray-600'>
-                  {preview ? (
-                    <div className='space-y-4'>
-                      <div className='relative w-full h-48'>
-                        <Image
-                          src={preview}
-                          alt="Preview"
-                          fill
-                          className='object-cover rounded'
-                        />
-                      </div>
-                      <p className='text-sm'>Click to change image</p>
-                    </div>
-                  ) : (
-                    <div className='space-y-2'>
-                      <p className='text-lg'>📸 Click to upload or drag and drop</p>
-                      <p className='text-sm text-gray-500'>PNG, JPG, GIF up to 10MB</p>
-                    </div>
-                  )}
+            <div className='space-y-3'>
+              <div className='flex gap-2'>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className='flex-1 border border-gray-300 p-2 rounded'
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={handleImageUpload}
+                  disabled={!file || uploading}
+                  className='bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 disabled:opacity-50 font-bold'
+                >
+                  {uploading ? 'Uploading...' : 'Upload'}
+                </button>
+              </div>
+
+              {preview && (
+                <div className='space-y-2'>
+                  <p className='text-sm text-gray-600'>Preview:</p>
+                  <div className='relative w-full h-48'>
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      fill
+                      className='object-cover rounded'
+                    />
+                  </div>
                 </div>
-              </label>
+              )}
+
+              {formData.image && (
+                <div className='bg-green-50 border border-green-200 p-3 rounded'>
+                  <p className='text-sm text-green-700'>✓ Image uploaded successfully</p>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !formData.image}
             className='bg-red-500 text-white p-3 rounded-lg font-bold uppercase hover:bg-red-600 disabled:opacity-50'
           >
             {loading ? 'Setting up...' : 'Complete Setup'}
