@@ -1,41 +1,52 @@
+import { Product } from '@/types/types'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
-import Price from '@/components/Price';
-import { Product } from '@/types/types';
+
 export const dynamic = 'force-dynamic';
 
-const GETDATA = async (id: string) => {
-     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-  const response = await fetch(`${baseUrl}/api/singleproduct?id=${id}`);
-  const data = await response.json();
-  return data;
+const GETDATA = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const response = await fetch(`${baseUrl}/api/products`);
+  return response.json();
 }
 
-const productPage = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
-  const { id } = await params;
-  const item: Product = await GETDATA(id);
+const ProductsPage = async () => {
+  const foodProducts: Product[] = await GETDATA();
   
+  if (!foodProducts || foodProducts.length === 0) {
+    return <div className='p-8 text-center'>No products available</div>
+  }
+
   return (
-    <div className='p-4 lg:px-20 xl:px-40 h-screen flex flex-col justify-center items-center md:flex-row '>
-      <div className='relative w-full md:w-1/2 h-1/2'>
-        <Image 
-          src={item.img}
-          alt={item.title}
-          fill 
-          className='object-contain' 
-        />
-      </div>
-      <div className=' text-red-400 w-full md:w-1/2 p-5 flex flex-col justify-center text-center items-center gap-8'>
-        <h1 className='font-bold text-3xl'>{item.title}</h1>
-        <p className=' text-xl'>{item.description}</p>
-        <Price product={item} />
-      </div>
+    <div className='flex flex-wrap items-center'>
+      {foodProducts.map((items) => (
+        <Link 
+          href={`/product/${items.id}`} 
+          key={items.id} 
+          className='h-[60vh] w-full md:w-1/2 lg:w-1/3 p-4 border-b-2 border-r-2 border-red-500 hover:bg-fuchsia-50 transition-all duration-300'
+        >
+          <div className='relative h-[85%]'>
+            <Image 
+              className='object-contain p-4 hover:rotate-[20deg] duration-500 transition-all' 
+              src={items.img}
+              alt={items.title}
+              fill
+            />
+          </div>
+          <div className='flex justify-between px-4 items-center text-red-500'>
+            <h1 className='text-xl font-bold'>{items.title}</h1>
+            <div className='flex justify-end items-center gap-2'>
+              <span className='text-xl'>${items.price}</span>
+              <button className='bg-red-500 text-white p-2 rounded-lg text-base uppercase hover:bg-red-600'>
+                add to cart
+              </button>
+            </div>
+          </div>
+        </Link>
+      ))}
     </div>
   )
 }
 
-export default productPage
+export default ProductsPage

@@ -1,25 +1,30 @@
-import { Product } from '@/types/types'
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import Image from 'next/image';
+import { Product } from '@/types/types'
 
 export const dynamic = 'force-dynamic';
 
-const GETDATA = async () => {
+const GETDATA = async (creator: string) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
-  const response = await fetch(`${baseUrl}/api/products`);
+  const response = await fetch(`${baseUrl}/api/products?creator=${creator}`);
   return response.json();
 }
 
-const ProductsPage = async () => {
-  const foodProducts: Product[] = await GETDATA();
+const CreatorPage = async ({
+  params,
+}: {
+  params: Promise<{ creator: string }>;
+}) => {
+  const { creator } = await params;
+  const foodProducts: Product[] = await GETDATA(creator);
   
   if (!foodProducts || foodProducts.length === 0) {
-    return <div className='p-8 text-center'>No products available</div>
+    return <div className='p-8 text-center'>No products from this creator</div>
   }
-
+  
   return (
-    <div className='flex flex-wrap items-center'>
+    <div className='flex flex-wrap h-full'>
       {foodProducts.map((items) => (
         <Link 
           href={`/product/${items.id}`} 
@@ -28,7 +33,7 @@ const ProductsPage = async () => {
         >
           <div className='relative h-[85%]'>
             <Image 
-              className='object-contain p-4 hover:rotate-[20deg] duration-500 transition-all' 
+              className='object-contain p-4 hover:scale-105 duration-500 transition-transform' 
               src={items.img}
               alt={items.title}
               fill
@@ -49,4 +54,4 @@ const ProductsPage = async () => {
   )
 }
 
-export default ProductsPage
+export default CreatorPage

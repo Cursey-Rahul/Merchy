@@ -9,9 +9,11 @@ import React, { useEffect } from 'react'
 const LoginPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-
+  
 useEffect(() => {
-  if (session?.user) {
+  if (session?.user && !session?.user?.userType) {
+    router.push('/choose-role');
+  } else if (session?.user) {
     router.push('/');
   }
 }, [session, router]);

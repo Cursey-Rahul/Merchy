@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -13,40 +7,50 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Category{
-  id       String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  title    String
-  slug String   @unique
-  colour String
-  description String
-  img String
-  products Product[]
-}
-model Product{
-  id       String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  title    String
-  price    Decimal
-  options Json[]
-  featured Boolean @default(false)
-  description     String
-  img       String?
-  category Category @relation(fields: [catSlug], references: [slug])
-  catSlug     String
-  cartItems CartItem[]
-}
 model User {
   id            String   @id @default(cuid())
   name          String?
-  email         String  @unique
+  email         String   @unique
   emailVerified DateTime?
   image         String?
+  userType      String   @default("user") // "user" or "creator"
   isAdmin       Boolean  @default(false) 
+  
+  // Creator fields
+  creator       Creator?
+  
   accounts      Account[]
   sessions      Session[]
   orders        order[]
-  cart         CartItem[]
+  cart          CartItem[]
+}
+
+model Creator {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @unique
+  title         String
+  slug          String   @unique
+  description   String
+  image         String   // Creator's profile/brand image
+  products      Product[]
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  title         String
+  price         Decimal
+  options       Json[]
+  featured      Boolean  @default(false)
+  description   String
+  img           String?
+  
+  creator       Creator  @relation(fields: [creatorSlug], references: [slug])
+  creatorSlug   String
+  
+  cartItems     CartItem[]
 }
 
 model Account {
@@ -63,7 +67,7 @@ model Account {
   id_token          String?
   session_state     String?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -74,7 +78,7 @@ model Session {
   userId       String
   expires      DateTime
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -84,21 +88,22 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
 model order {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  price Decimal
-  products Json[]
-  status String @default("pending")
-  intentId String? @unique
-  user User @relation(fields: [userEmail], references: [email])
+  price     Decimal
+  products  Json[]
+  status    String   @default("pending")
+  intentId  String?  @unique
+  user      User     @relation(fields: [userEmail], references: [email])
   userEmail String
 }
 
 model CartItem {
   id        String   @id @default(uuid())
   user      User     @relation(fields: [userEmail], references: [email])
-  userEmail    String
+  userEmail String
   product   Product  @relation(fields: [productId], references: [id])
   productId String
   quantity  Int

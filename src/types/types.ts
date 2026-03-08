@@ -1,56 +1,71 @@
+export type Creator = {
+  id: string;
+  userId: string;
+  slug: string;
+  title: string;
+  description: string;
+  image: string;
+};
 
-export type FoodItemType = {
-    id: number;
-    title: string;
-    description: string;
-    img: string;
-    slug: string;
-    colour: string;
-  };
-  export type Product = {
-    id: number;
-    title: string;
-    description: string;
-    img: string;
-    price: number ; // Price can be a number or Decimal type
-    options?: {  // Options as an object inside the product
-      title: string;
-      additionalPrice: number; // Additional price can also be a number or Decimal type
-    }[];
-  };
-  export type Order = {
+export type Product = {
   id: string;
   createdAt: Date;
-  userEmail: string; // Assuming you have a user email field
-  price: string; // Decimal values are usually returned as strings in Prisma
-  products: Product[];// JSON type — you can use a more specific type if you know the structure
-  status: string; // e.g., "pending", "paid", etc.
+  title: string;
+  description: string;
+  img: string;
+  price: number | string; // Can be number or Decimal (returned as string from DB)
+  options?: {
+    title: string;
+    additionalPrice: number;
+  }[];
+  creatorSlug: string;
+  featured?: boolean;
 };
+
+export type Order = {
+  id: string;
+  createdAt: Date;
+  userEmail: string;
+  price: string; // Decimal values are returned as strings from Prisma
+  products: Product[];
+  status: string;
+};
+
 export type Cart = {
   id: string;
   createdAt: Date;
-  products: Product[]; // Assuming products are stored as an array of Product objects
-  userEmail: string; // Assuming you have a user email field
+  products: Product[];
+  userEmail: string;
 };
 
 export type CartItems = {
-        userEmail: string,
-        productId: string,
-        id : string;
-        name: string,
-        image: string,
-        price: string,
-        quantity: number,
-        option?: string 
-}
+  userEmail: string;
+  productId: string;
+  id: string;
+  title: string;
+  img: string;
+  price: string;
+  quantity: number;
+  options?: string;
+};
 
 export type CartItem = {
-        userEmail: string,
-        productId: string,
-        id : string;
-        title: string,
-        img: string,
-        price: string,
-        quantity: number,
-        options?: string 
-}
+  userEmail: string;
+  productId: string;
+  id: string;
+  title: string;
+  img: string;
+  price: string;
+  quantity: number;
+  options?: string;
+};
+
+export type User = {
+  id: string;
+  name?: string;
+  email: string;
+  emailVerified?: Date;
+  image?: string;
+  userType: string; // "user" or "creator"
+  isAdmin: boolean;
+};
