@@ -12,18 +12,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await req.json();
-    console.log('Save cart body:', body); // Debug log
-    
-    const { productId, title, img, price, quantity, options } = body;
+    const { productId, title, img, price, quantity, options } = await req.json();
 
     if (!productId || !title || !img || !price || quantity === undefined) {
-      console.log('Missing fields:', { productId, title, img, price, quantity }); // Debug
       return NextResponse.json({ error: "Missing data" }, { status: 400 });
     }
 
     if (quantity < 1 || quantity > 15) {
-      return NextResponse.json({ error: "Invalid quantity" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid quantity (1-15)" }, { status: 400 });
     }
 
     const existingItem = await prisma.cartItem.findFirst({
@@ -35,14 +31,11 @@ export async function POST(req: Request) {
     });
 
     if (existingItem) {
-      const newQuantity = existingItem.quantity + quantity;
-      if (newQuantity > 15) {
-        return NextResponse.json({ error: "Maximum quantity exceeded" }, { status: 400 });
-      }
+      // If item exists, just replace the quantity (don't add)
       await prisma.cartItem.update({
         where: { id: existingItem.id },
         data: {
-          quantity: newQuantity,
+          quantity: quantity, // SET to new quantity, don't add
         },
       });
     } else {
