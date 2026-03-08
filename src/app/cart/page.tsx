@@ -9,15 +9,17 @@ export const dynamic = 'force-dynamic';
 const GETDATA = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
   try {
+    console.log('Fetching from:', `${baseUrl}/api/cartitems`)
     const data = await fetch(`${baseUrl}/api/cartitems`)
     const result = await data.json();
+    console.log('Cart items result:', result)
+    console.log('Is array?', Array.isArray(result))
     return Array.isArray(result) ? result : [];
   } catch (error) {
     console.error('Error fetching cart items:', error)
     return [];
   }
 }
-
 const CartPage = async () => {
   const cartItems: CartItem[] = await GETDATA();
   
