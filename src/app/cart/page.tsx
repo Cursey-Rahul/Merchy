@@ -3,23 +3,40 @@ import React from 'react'
 import { CartItem } from '@/types/types';
 import CartProductChangeButton from '@/components/cartProductChangeButton';
 import Link from 'next/link';
+import { getSession } from '@/lib/auth';
+import { prisma } from '@/utils/connect';
 
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
-  const baseUrl ='https://merchy-blond.vercel.app'
   try {
-    console.log('Fetching from:', `${baseUrl}/api/cartitems`)
-    const data = await fetch(`${baseUrl}/api/cartitems`)
-    const result = await data.json();
-    console.log('Cart items result:', result)
-    console.log('Is array?', Array.isArray(result))
-    return Array.isArray(result) ? result : [];
+    const session = await getSession()
+    const user = session?.user?.email
+    
+    if (!user) {
+      return [];
+    }
+
+    const items = await prisma.cartItem.findMany({
+      where: {
+        userEmail: user
+      },
+      include: {
+        product: {
+          select: {
+            title: true,
+            creatorSlug: true
+          }
+        }
+      }
+    })
+    return items;
   } catch (error) {
     console.error('Error fetching cart items:', error)
     return [];
   }
 }
+
 const CartPage = async () => {
   const cartItems: CartItem[] = await GETDATA();
   
