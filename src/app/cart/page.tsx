@@ -3,44 +3,12 @@ import React from 'react'
 import { CartItem } from '@/types/types';
 import CartProductChangeButton from '@/components/cartProductChangeButton';
 import Link from 'next/link';
-import { getSession } from '@/lib/auth';
-import { prisma } from '@/utils/connect';
 
 export const dynamic = 'force-dynamic';
-
 const GETDATA = async () => {
-  try {
-    const session = await getSession()
-    const user = session?.user?.email
-    
-    if (!user) {
-      return [];
-    }
-
-    const items = await prisma.cartItem.findMany({
-      where: {
-        userEmail: user
-      },
-      include: {
-        product: {
-          select: {
-            title: true,
-            creatorSlug: true
-          }
-        }
-      }
-    })
-    
-    // Format items to match API response
-    return items.map(item => ({
-      ...item,
-      price: item.price.toString(),
-      img: `https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`
-    }));
-  } catch (error) {
-    console.error('Error fetching cart items:', error)
-    return [];
-  }
+     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
+  const data = await fetch(`${baseUrl}/api/cartitems`)
+  return data.json();
 }
 
 const CartPage = async () => {
@@ -53,7 +21,8 @@ const CartPage = async () => {
   const quantity = cartItems.reduce((sum, items) => {
     return sum + items.quantity;
   }, 0);
-
+  
+  // Format the total price in Indian Rupees
   const formattedTotal = total.toLocaleString("en-IN", {
     style: "currency",
     currency: "INR",
@@ -69,11 +38,10 @@ const CartPage = async () => {
               className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'
             >
               <Image 
-                src={item.img}
+                src={`https://res.cloudinary.com/dq5vadic7/image/upload/v1759508831/${item.img}`} 
                 alt={item.title}
                 width={100} 
-                height={100}
-                unoptimized
+                height={100} 
               />
               <div>
                 <h2 className='font-bold text-l uppercase'>{item.title}</h2>
