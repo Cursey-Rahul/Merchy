@@ -12,13 +12,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { productId, title, img, price, quantity, options } = await req.json();
+    const body = await req.json();
+    console.log('Save cart body:', body); // Debug log
+    
+    const { productId, title, img, price, quantity, options } = body;
 
-    if (!productId || !title || !img || !price || !quantity) {
+    if (!productId || !title || !img || !price || quantity === undefined) {
+      console.log('Missing fields:', { productId, title, img, price, quantity }); // Debug
       return NextResponse.json({ error: "Missing data" }, { status: 400 });
     }
 
-    // Validate quantity
     if (quantity < 1 || quantity > 15) {
       return NextResponse.json({ error: "Invalid quantity" }, { status: 400 });
     }
@@ -27,7 +30,7 @@ export async function POST(req: Request) {
       where: {
         userEmail: user,
         productId,
-        options: JSON.stringify(options) || '',
+        options: options ? JSON.stringify(options) : '',
       },
     });
 
@@ -47,7 +50,7 @@ export async function POST(req: Request) {
         data: {
           userEmail: user,
           productId,
-          options: JSON.stringify(options) || '',
+          options: options ? JSON.stringify(options) : '',
           quantity,
           title,
           price: new Prisma.Decimal(price),
