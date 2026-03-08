@@ -1,24 +1,29 @@
 import { prisma } from '@/utils/connect'
+import { getSession } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { email, title, description, image } = await req.json()
+    const session = await getSession()
+    
+    if (!session?.user?.email) {
+      return new NextResponse(
+        JSON.stringify({ error: 'Unauthorized' }), 
+        { status: 401 }
+      )
+    }
 
-    if (!email || !title || !description || !image) {
+    const { title, description, image } = await req.json()
+
+    if (!title || !description || !image) {
       return new NextResponse(
         JSON.stringify({ error: 'Missing required fields' }), 
         { status: 400 }
       )
     }
 
-    // Upload image to Cloudinary (or your storage service)
-    // For now, we'll use the base64 directly or upload to Cloudinary
-    const imageUrl = await uploadImage(image)
-
-    // Update creator profile
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: session.user.email },
       include: { creator: true }
     })
 
@@ -29,8 +34,14 @@ export const POST = async (req: NextRequest) => {
       )
     }
 
+    // Upload image
+    let imageUrl = image
+    if (image.startsWith('data:')) {
+      imageUrl = await uploadToCloudinary(image)
+    }
+
     const updatedCreator = await prisma.creator.update({
-      where: { slug: user.creator.slug },
+      where: { userId: user.id },
       data: {
         title,
         description,
@@ -40,34 +51,37 @@ export const POST = async (req: NextRequest) => {
 
     return new NextResponse(JSON.stringify(updatedCreator), { status: 200 })
   } catch (error) {
-    console.error(error)
+    console.error('Setup error:', error)
     return new NextResponse(
-      JSON.stringify({ error: 'Failed to setup creator profile' }), 
+      JSON.stringify({ error: String(error) }), 
       { status: 500 }
     )
   }
 }
 
-// Upload image to Cloudinary
-async function uploadImage(base64Image: string): Promise<string> {
+async function uploadToCloudinary(base64: string): Promise<string> {
   try {
     const formData = new FormData()
-    formData.append('file', base64Image)
+    formData.append('file', base64)
     formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET!)
+    formData.append('folder', 'creator-profiles')
 
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_CLOUDINARY_CLOUD_NAME}/image/upload`,
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
       {
         method: 'POST',
         body: formData
       }
     )
 
-    const data = await response.json()
-    return data.secure_url
+    const data = await res.json()
+    if (data.error) {
+      console.error('Cloudinary error:', data.error)
+      return base64
+    }
+    return data.secure_url || base64
   } catch (error) {
-    console.error('Image upload error:', error)
-    // Return base64 if upload fails
-    return base64Image
+    console.error('Upload error:', error)
+    return base64
   }
 }
