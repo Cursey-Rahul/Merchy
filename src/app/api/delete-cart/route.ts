@@ -17,16 +17,27 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "Missing productId" }, { status: 400 });
     }
 
-    // Convert options to match storage format
-    const optionsString = options ? JSON.stringify(options) : '';
+    // Convert options to match storage format - handle both old and new format
+    let optionsString = '';
+    if (options) {
+      if (typeof options === 'string') {
+        optionsString = options;
+      } else {
+        optionsString = JSON.stringify(options);
+      }
+    }
+
+    console.log('Looking for item with:', { userEmail: user, productId, optionsString });
 
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         userEmail: user,
         productId: productId,
-        options: optionsString, // Match exactly
+        options: optionsString,
       },
     });
+
+    console.log('Found item:', existingItem);
 
     if (existingItem) {
       if (existingItem.quantity <= 1) {
@@ -41,10 +52,10 @@ export async function PATCH(req: Request) {
           },
         });
       }
+      return NextResponse.json({ success: true });
     } else {
       return NextResponse.json({ error: "Item not found in cart" }, { status: 404 });
     }
-    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error in /api/delete-cart:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
