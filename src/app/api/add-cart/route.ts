@@ -13,51 +13,33 @@ export async function PATCH(req: Request) {
 
     const { productId, options } = await req.json();
 
-    if (!productId || !options) {
-      return NextResponse.json({ error: "Missing data" }, { status: 400 });
+    if (!productId) {
+      return NextResponse.json({ error: "Missing productId" }, { status: 400 });
     }
 
-    // Get product details
-    const product = await prisma.product.findUnique({
-      where: { id: productId }
-    });
-
-    if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
-    }
+    // Convert options to match storage format
+    const optionsString = options ? JSON.stringify(options) : '';
 
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         userEmail: user,
         productId: productId,
-        options: JSON.stringify(options), // Match options as JSON string
+        options: optionsString, // Match exactly
       },
     });
 
     if (existingItem) {
-      if (existingItem.quantity + 1 >= 16) {
+      if (existingItem.quantity + 1 > 15) {
         return NextResponse.json({ error: "Maximum quantity reached" }, { status: 400 });
-      } else {
-        await prisma.cartItem.update({
-          where: { id: existingItem.id },
-          data: {
-            quantity: existingItem.quantity + 1,
-          },
-        });
       }
-    } else {
-      // Create new cart item
-      await prisma.cartItem.create({
+      await prisma.cartItem.update({
+        where: { id: existingItem.id },
         data: {
-          userEmail: user,
-          productId: productId,
-          options: JSON.stringify(options),
-          quantity: 1,
-          img: product.img || "",
-          price: product.price,
-          title: product.title,
+          quantity: existingItem.quantity + 1,
         },
       });
+    } else {
+      return NextResponse.json({ error: "Item not found in cart" }, { status: 404 });
     }
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -13,15 +13,18 @@ export async function PATCH(req: Request) {
 
     const { productId, options } = await req.json();
 
-    if (!productId || !options) {
-      return NextResponse.json({ error: "Missing data" }, { status: 400 });
+    if (!productId) {
+      return NextResponse.json({ error: "Missing productId" }, { status: 400 });
     }
+
+    // Convert options to match storage format
+    const optionsString = options ? JSON.stringify(options) : '';
 
     const existingItem = await prisma.cartItem.findFirst({
       where: {
         userEmail: user,
         productId: productId,
-        options: JSON.stringify(options),
+        options: optionsString, // Match exactly
       },
     });
 
