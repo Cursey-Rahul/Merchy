@@ -25,7 +25,7 @@ const Price = ( {product}: {product:Product}) => {
 
     const handleAddToCart = async () => {
   const selectedOption = product.options?.[selected];
-  quantityStore(quantity); // update local Zustand store
+  quantityStore(quantity);
 
   if (!session?.user?.email) {
     console.error("No session email");
@@ -45,7 +45,7 @@ const Price = ( {product}: {product:Product}) => {
           ? Number(product.price) + Number(product.options[selected].additionalPrice)
           : Number(product.price),
         quantity,
-        option: selectedOption?.title ?? undefined,
+        options: selectedOption || undefined,
       }),
     });
 
@@ -56,7 +56,7 @@ const Price = ( {product}: {product:Product}) => {
     const result = await res.json();
     console.log("✅ Cart saved:", result);
 
-    router.push("/cart"); // ✅ redirect only after successful save
+    router.push("/cart");
   } catch (error) {
     console.error("❌ Error saving cart:", error);
   }

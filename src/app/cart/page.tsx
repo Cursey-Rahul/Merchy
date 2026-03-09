@@ -62,27 +62,32 @@ const CartPage = async () => {
   return (
     <div className='h-[calc(100vh-6rem)] md:h-[calc(100vh-8rem)] w-full flex flex-col text-red-500 md:flex-row'>
       <div className='h-1/2 md:h-full w-full flex flex-col overflow-y-scroll justify-center'>
-        {cartItems.map((item) => (
-          <div 
-            key={item.id} 
-            className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'
-          >
-            <Image 
-              src={item.img}
-              alt={item.title}
-              width={100} 
-              height={100}
-              unoptimized
-            />
-            <div>
-              <h2 className='font-bold text-l uppercase'>{item.title}</h2>
-            </div>
-            <span className='font-semibold'>₹{(Number(item.price) * item.quantity).toFixed(2)}</span>
-            <div className='flex flex-row items-center gap-4'>
-              <CartProductChangeButton item={item} quantity={quantity} />
-            </div>
-          </div>
-        ))}
+   {cartItems.map((item) => (
+  <div 
+    key={item.id} 
+    className='w-full flex flex-row items-center justify-around py-3 border-b-2 border-red-400'
+  >
+    <Image 
+      src={item.img}
+      alt={item.title}
+      width={100} 
+      height={100}
+      unoptimized
+    />
+    <div>
+      <h2 className='font-bold text-l uppercase'>{item.title}</h2>
+      {item.options && item.options !== '' && (
+        <p className='text-sm text-gray-600'>
+          {JSON.parse(item.options)?.title || item.options}
+        </p>
+      )}
+    </div>
+    <span className='font-semibold'>₹{(Number(item.price) * item.quantity).toFixed(2)}</span>
+    <div className='flex flex-row items-center gap-4'>
+      <CartProductChangeButton item={item} quantity={quantity} />
+    </div>
+  </div>
+))}
       </div>
 
       <div className='h-1/2 md:h-full bg-fuchsia-50 w-full flex flex-col justify-center text-l font-medium md:w-[45%]'>
