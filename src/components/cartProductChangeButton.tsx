@@ -18,13 +18,13 @@ const CartProductChangeButton = ({item, quantity}: {item:CartItem; quantity:numb
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          productId: String(item.productId),
-          options: item.options ? JSON.parse(item.options) : undefined,
+          productId: item.productId,
+          options: item.options || undefined,
         }),
       });
 
       if (!res.ok) {
-        fixQuantity(previousQuantity); // Revert on error
+        fixQuantity(previousQuantity);
         throw new Error("Failed to delete from cart");
       }
       
@@ -44,13 +44,13 @@ const CartProductChangeButton = ({item, quantity}: {item:CartItem; quantity:numb
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          productId: String(item.productId),
-          options: item.options ? JSON.parse(item.options) : undefined,
+          productId: item.productId,
+          options: item.options || undefined,
         }),
       });
 
       if (!res.ok) {
-        fixQuantity(previousQuantity); // Revert on error
+        fixQuantity(previousQuantity);
         throw new Error("Failed to add to cart");
       }
       
