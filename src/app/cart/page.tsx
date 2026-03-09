@@ -1,29 +1,42 @@
 import Image from 'next/image'
 import React from 'react'
-import { CartItem } from '@/types/types';
 import CartProductChangeButton from '@/components/cartProductChangeButton';
 import Link from 'next/link';
+import { getSession } from '@/lib/auth';
+import { prisma } from '@/utils/connect';
+import { CartItem } from '@/types/types'; // Import from types file
 
 export const dynamic = 'force-dynamic';
 
 const GETDATA = async () => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
   try {
-    const data = await fetch(`${baseUrl}/api/cartitems`, {
-      cache: 'no-store'
+    const session = await getSession()
+    const user = session?.user?.email
+    
+    if (!user) {
+      return [];
+    }
+
+    const items = await prisma.cartItem.findMany({
+      where: {
+        userEmail: user
+      }
     })
-    const result = await data.json();
-    console.log('Cart items:', result)
-    return Array.isArray(result) ? result : [];
+    
+    // Convert Decimal to string
+    return items.map(item => ({
+      ...item,
+      price: String(item.price)
+    })) as CartItem[];
   } catch (error) {
-    console.error('Error fetching cart:', error)
+    console.error('Error fetching cart items:', error)
     return [];
   }
 }
 
 const CartPage = async () => {
   const cartItems: CartItem[] = await GETDATA();
-  console.log('CartItems length:', cartItems.length)
+  console.log('CartItems:', cartItems)
   
   if (!cartItems || cartItems.length === 0) {
     return (
