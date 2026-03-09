@@ -31,11 +31,14 @@ export async function POST(req: Request) {
     });
 
     if (existingItem) {
-      // If item exists, just replace the quantity (don't add)
+      const newQuantity = existingItem.quantity + quantity; // ADD to existing
+      if (newQuantity > 15) {
+        return NextResponse.json({ error: "Maximum quantity exceeded" }, { status: 400 });
+      }
       await prisma.cartItem.update({
         where: { id: existingItem.id },
         data: {
-          quantity: quantity, // SET to new quantity, don't add
+          quantity: newQuantity, // ADD the quantities
         },
       });
     } else {
