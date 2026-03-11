@@ -111,80 +111,87 @@ const CreatorSetupPage = () => {
   };
 
   return (
-    <div className='min-h-[calc(100vh-6rem)] p-4 md:p-8 flex items-center justify-center'>
+    <div className='min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-8rem)] bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8 flex items-center justify-center'>
       <div className='w-full max-w-2xl'>
-        <h1 className='font-bold text-3xl mb-2 text-center'>Setup Your Creator Profile</h1>
-        <p className='text-center text-gray-600 mb-8'>Complete your profile to start selling</p>
+        {/* Header */}
+        <div className='text-center mb-8'>
+          <h1 className='font-bold text-2xl sm:text-3xl md:text-4xl mb-2 text-gray-900'>Setup Your Creator Profile</h1>
+          <p className='text-sm sm:text-base text-gray-600'>Complete your profile to start selling</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className='flex flex-col gap-6 bg-white p-8 rounded-lg shadow'>
+        {/* Form Container */}
+        <form onSubmit={handleSubmit} className='flex flex-col gap-6 bg-white p-6 sm:p-8 rounded-lg shadow-lg'>
           
           {/* Brand Name */}
           <div>
-            <label className='block font-bold mb-2'>Brand Name *</label>
+            <label className='block font-semibold text-gray-800 mb-2 text-sm sm:text-base'>Brand Name <span className='text-red-500'>*</span></label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               placeholder="Your brand name"
-              className='w-full border border-gray-300 p-3 rounded focus:outline-none focus:border-red-500'
+              className='w-full border-2 border-gray-300 p-2.5 sm:p-3 rounded-lg focus:outline-none focus:border-red-500 transition text-sm sm:text-base'
               required
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className='block font-bold mb-2'>Brand Description *</label>
+            <label className='block font-semibold text-gray-800 mb-2 text-sm sm:text-base'>Brand Description <span className='text-red-500'>*</span></label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               placeholder="Tell us about your brand..."
               rows={4}
-              className='w-full border border-gray-300 p-3 rounded focus:outline-none focus:border-red-500'
+              className='w-full border-2 border-gray-300 p-2.5 sm:p-3 rounded-lg focus:outline-none focus:border-red-500 transition text-sm sm:text-base resize-none'
               required
             />
           </div>
 
           {/* Brand Image Upload */}
           <div>
-            <label className='block font-bold mb-2'>Brand Image (for menu) *</label>
+            <label className='block font-semibold text-gray-800 mb-2 text-sm sm:text-base'>Brand Image (for menu) <span className='text-red-500'>*</span></label>
             <div className='space-y-3'>
-              <div className='flex gap-2'>
+              {/* File Input and Upload Button */}
+              <div className='flex flex-col sm:flex-row gap-2'>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className='flex-1 border border-gray-300 p-2 rounded'
+                  className='flex-1 border-2 border-gray-300 p-2.5 rounded-lg text-sm sm:text-base file:mr-2 file:py-2 file:px-3 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200'
                   required
                 />
                 <button
                   type="button"
                   onClick={handleImageUpload}
                   disabled={!file || uploading}
-                  className='bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 disabled:opacity-50 font-bold'
+                  className='bg-green-600 text-white px-4 sm:px-6 py-2.5 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm sm:text-base transition whitespace-nowrap'
                 >
                   {uploading ? 'Uploading...' : 'Upload'}
                 </button>
               </div>
 
+              {/* Preview */}
               {preview && (
                 <div className='space-y-2'>
-                  <p className='text-sm text-gray-600'>Preview:</p>
-                  <div className='relative w-full h-48'>
+                  <p className='text-xs sm:text-sm text-gray-600 font-semibold'>Preview:</p>
+                  <div className='relative w-full h-40 sm:h-48 md:h-56'>
                     <Image
                       src={preview}
                       alt="Preview"
                       fill
-                      className='object-cover rounded'
+                      className='object-cover rounded-lg'
                     />
                   </div>
                 </div>
               )}
 
+              {/* Success Message */}
               {formData.image && (
-                <div className='bg-green-50 border border-green-200 p-3 rounded'>
-                  <p className='text-sm text-green-700'>✓ Image uploaded successfully</p>
+                <div className='bg-green-50 border-2 border-green-200 p-3 sm:p-4 rounded-lg'>
+                  <p className='text-xs sm:text-sm text-green-700 font-semibold'>✓ Image uploaded successfully</p>
                 </div>
               )}
             </div>
@@ -194,12 +201,13 @@ const CreatorSetupPage = () => {
           <button
             type="submit"
             disabled={loading || !formData.image}
-            className='bg-red-500 text-white p-3 rounded-lg font-bold uppercase hover:bg-red-600 disabled:opacity-50'
+            className='bg-red-500 text-white p-3 sm:p-3.5 rounded-lg font-bold uppercase hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm sm:text-base'
           >
             {loading ? 'Setting up...' : 'Complete Setup'}
           </button>
 
-          <p className='text-sm text-gray-600 text-center'>
+          {/* Footer Text */}
+          <p className='text-xs sm:text-sm text-gray-600 text-center'>
             You can edit this later from your dashboard
           </p>
         </form>
