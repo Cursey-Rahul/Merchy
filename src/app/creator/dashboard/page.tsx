@@ -4,22 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
-
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  img: string;
-  price: number;
-}
-
-interface Creator {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  image: string;
-}
+import { Creator, Product } from '@/types/types';
 
 const CreatorDashboard = () => {
   const { data: session, status } = useSession();
@@ -27,15 +12,6 @@ const CreatorDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [creator, setCreator] = useState<Creator | null>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    }
-    if (status === 'authenticated' && session?.user?.userType !== 'creator') {
-      router.push('/');
-    }
-  }, [status, session, router]);
 
   const fetchCreatorData = useCallback(async () => {
     try {
@@ -60,6 +36,15 @@ const CreatorDashboard = () => {
       setLoading(false);
     }
   }, [session?.user?.email]);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+    if (status === 'authenticated' && session?.user?.userType !== 'creator') {
+      router.push('/');
+    }
+  }, [status, session, router]);
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -110,6 +95,7 @@ const CreatorDashboard = () => {
                   alt={creator.title}
                   fill
                   className='object-cover'
+                  unoptimized
                 />
               </div>
 
@@ -139,12 +125,12 @@ const CreatorDashboard = () => {
                 </div>
 
                 {/* Edit Profile Button */}
-                <Link 
-                  href='/creator/setup'
-                  className='inline-block bg-red-500 text-white px-6 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-red-600 transition-all duration-300 text-sm sm:text-base'
+                <button 
+                  onClick={() => router.push('/creator/setup')}
+                  className='w-full sm:w-auto bg-red-500 text-white px-6 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-red-600 active:bg-red-700 transition-all duration-300 text-sm sm:text-base'
                 >
-                  Edit Profile
-                </Link>
+                  Edit Profile Details
+                </button>
               </div>
             </div>
           </div>
@@ -164,7 +150,7 @@ const CreatorDashboard = () => {
             </div>
             <Link 
               href="/creator/add-product" 
-              className='w-full sm:w-auto bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-all duration-300 text-center text-sm sm:text-base shadow-md hover:shadow-lg'
+              className='w-full sm:w-auto bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 active:bg-red-700 transition-all duration-300 text-center text-sm sm:text-base shadow-md hover:shadow-lg'
             >
               + Add Product
             </Link>
@@ -182,7 +168,7 @@ const CreatorDashboard = () => {
               </div>
               <Link 
                 href="/creator/add-product" 
-                className='inline-block bg-red-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-600 transition-all duration-300 text-sm sm:text-base'
+                className='inline-block bg-red-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-600 active:bg-red-700 transition-all duration-300 text-sm sm:text-base'
               >
                 Create Your First Product
               </Link>
@@ -196,10 +182,12 @@ const CreatorDashboard = () => {
                 >
                   {/* Product Image */}
                   <div className='relative h-40 sm:h-48 bg-gray-200 overflow-hidden'>
-                    <Image
+                    <Image 
                       src={product.img} 
-                      alt={product.title} 
-                      className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
+                      alt={product.title}
+                      fill
+                      className='object-cover group-hover:scale-105 transition-transform duration-300'
+                      unoptimized
                     />
                     <div className='absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs sm:text-sm font-semibold'>
                       ${product.price}
@@ -219,13 +207,13 @@ const CreatorDashboard = () => {
                     <div className='flex gap-2 sm:gap-3'>
                       <Link 
                         href={`/creator/edit-product/${product.id}`}
-                        className='flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 text-center font-semibold text-xs sm:text-sm'
+                        className='flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-all duration-300 text-center font-semibold text-xs sm:text-sm'
                       >
                         Edit
                       </Link>
                       <button 
                         onClick={() => handleDeleteProduct(product.id)}
-                        className='flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-all duration-300 font-semibold text-xs sm:text-sm'
+                        className='flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 active:bg-red-700 transition-all duration-300 font-semibold text-xs sm:text-sm'
                       >
                         Delete
                       </button>
