@@ -3,16 +3,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import Shopingcart from './Shopingcart'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 const toggles = [
     { id: 1, title: "Homepage", url: "/" },
     { id: 2, title: "Menu", url: "/menu" },
     { id: 3, title: "Contact", url: "/contact" },
 ]
+
 function Menu() {
     const [open, setOpen] = useState(false)
     const { data: session } = useSession();
+
     return (
         <div>
             {!open ? (
@@ -21,19 +23,77 @@ function Menu() {
                 <Image src="/close.png" alt="" width={20} height={20} onClick={() => { setOpen(false) }} />
             )}
             {open && (
-                <div className='  bg-red-500 text-white uppercase flex justify-center items-center h-[calc(100vh-6rem)] text-2xl gap-8 flex-col absolute left-0 top-24 w-full font-semibold z-10'>
+                <div className='bg-red-500 text-white uppercase flex justify-center items-center h-[calc(100vh-6rem)] text-2xl gap-8 flex-col absolute left-0 top-24 w-full font-semibold z-10'>
 
-                {toggles.map((toggle) => (
-                    <Link key={toggle.id} href={toggle.url} onClick={() => { setOpen(false) }}>{toggle.title} </Link>
-                ))}
+                    {toggles.map((toggle) => (
+                        <Link key={toggle.id} href={toggle.url} onClick={() => { setOpen(false) }}>
+                            {toggle.title}
+                        </Link>
+                    ))}
 
-                {!session?.user? (<Link href='/login' onClick={() => { setOpen(false) }}>Login</Link>):(<Link href='/orders' onClick={() => { setOpen(false) }}>Orders</Link>)}
-                <div onClick={() => { setOpen(false) }}> 
-                 <Shopingcart/>
+                    {!session?.user ? (
+                        <Link href='/login' onClick={() => { setOpen(false) }}>Login</Link>
+                    ) : (
+                        <>
+                            <div className='flex flex-col gap-6 items-center'>
+                                {/* User Profile Info */}
+                                <div className='flex items-center gap-3 justify-center'>
+                                    {session?.user?.image && (
+                                        <Image 
+                                            src={session.user.image} 
+                                            alt={session.user.name || 'User'} 
+                                            width={40} 
+                                            height={40}
+                                            className='rounded-full'
+                                        />
+                                    )}
+                                    <span className='text-lg'>{session?.user?.name || 'User'}</span>
+                                </div>
+
+                                {/* Orders Link */}
+                                <Link href='/orders' onClick={() => { setOpen(false) }} className='hover:underline'>
+                                    My Orders
+                                </Link>
+
+                                {/* Admin Page */}
+                                {session?.user?.isAdmin && (
+                                    <Link href='/admin' onClick={() => { setOpen(false) }} className='hover:underline'>
+                                        Admin Page
+                                    </Link>
+                                )}
+
+                                {/* Creator Dashboard */}
+                                {session?.user?.userType === 'creator' && (
+                                    <Link href='/creator/dashboard' onClick={() => { setOpen(false) }} className='hover:underline'>
+                                        Dashboard
+                                    </Link>
+                                )}
+
+                                {/* Become Creator */}
+                                {session?.user?.userType === 'user' && (
+                                    <Link href='/choose-role' onClick={() => { setOpen(false) }} className='hover:underline'>
+                                        Become Creator
+                                    </Link>
+                                )}
+
+                                {/* Logout */}
+                                <button 
+                                    onClick={() => {
+                                        signOut();
+                                        setOpen(false);
+                                    }}
+                                    className='hover:underline text-red-200 hover:text-white'
+                                >
+                                    Log Out
+                                </button>
+                            </div>
+                        </>
+                    )}
+
+                    <div onClick={() => { setOpen(false) }}> 
+                        <Shopingcart />
+                    </div>
                 </div>
-              
-
-            </div>
             )}
         </div>
     );
