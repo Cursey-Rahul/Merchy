@@ -36,20 +36,7 @@ function Menu() {
                     ) : (
                         <>
                             <div className='flex flex-col gap-6 items-center'>
-                                {/* User Profile Info */}
-                                <div className='flex items-center gap-3 justify-center'>
-                                    {session?.user?.image && (
-                                        <Image 
-                                            src={session.user.image} 
-                                            alt={session.user.name || 'User'} 
-                                            width={40} 
-                                            height={40}
-                                            className='rounded-full'
-                                        />
-                                    )}
-                                    <span className='text-lg'>{session?.user?.name || 'User'}</span>
-                                </div>
-
+                               
                                 {/* Orders Link */}
                                 <Link href='/orders' onClick={() => { setOpen(false) }} className='hover:underline'>
                                     My Orders
@@ -78,14 +65,15 @@ function Menu() {
 
                                 {/* Logout */}
                                 <button 
-                                    onClick={() => {
-                                        signOut();
-                                        setOpen(false);
-                                    }}
-                                    className='hover:underline text-red-200 hover:text-white'
-                                >
-                                    Log Out
-                                </button>
+  onClick={() => {
+    signOut();
+    setOpen(false);
+  }}
+  className='bg-white text-red-500 px-6 py-2 rounded-lg font-semibold hover:bg-red-50 active:bg-red-100 transition-all duration-300'
+>
+  Log Out
+</button>
+                               
                             </div>
                         </>
                     )}
