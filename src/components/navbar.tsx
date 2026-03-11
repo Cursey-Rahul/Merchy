@@ -59,10 +59,15 @@ const Header = () => {
                   </DropdownMenuItem>
                 )}
 
-                {/* Show Dashboard for creators or users */}
-                {(session?.user?.userType === 'creator' || session?.user?.userType === 'user') && (
+                {/* Show Dashboard for creators */}
+                {(session?.user?.userType === 'creator') && (
                   <DropdownMenuItem>
                     <Link href='/creator/dashboard' className='hover:underline hover:font-semibold'>Dashboard</Link>
+                  </DropdownMenuItem>
+                )} 
+                {(session?.user?.userType === 'user') && (
+                  <DropdownMenuItem>
+                    <Link href='/choose-role' className='hover:underline hover:font-semibold'>Become Creator</Link>
                   </DropdownMenuItem>
                 )}
 

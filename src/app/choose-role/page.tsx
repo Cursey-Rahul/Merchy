@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const ChooseRolePage = () => {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +29,13 @@ const ChooseRolePage = () => {
       });
 
       if (res.ok) {
+        // Update the session to reflect the new role
+        await update();
+        
+        // Navigate to appropriate page
         router.push(role === 'creator' ? '/creator/setup' : '/');
+      } else {
+        console.error('Failed to set role');
       }
     } catch (error) {
       console.error('Error setting role:', error);
