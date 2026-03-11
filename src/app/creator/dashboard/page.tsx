@@ -1,14 +1,12 @@
 "use client";
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
 import { Creator, Product } from '@/types/types';
 
 const CreatorDashboard = () => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession();
   const [products, setProducts] = useState<Product[]>([]);
   const [creator, setCreator] = useState<Creator | null>(null);
   const [loading, setLoading] = useState(true);
@@ -17,13 +15,11 @@ const CreatorDashboard = () => {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://merchy-blond.vercel.app'
       
-      // Fetch creator profile
       const creatorRes = await fetch(`${baseUrl}/api/creator/profile?email=${session?.user?.email}`);
       if (creatorRes.ok) {
         const creatorData = await creatorRes.json();
         setCreator(creatorData);
 
-        // Fetch products
         const productsRes = await fetch(`${baseUrl}/api/creator/products?slug=${creatorData.slug}`);
         if (productsRes.ok) {
           const productsData = await productsRes.json();
@@ -36,15 +32,6 @@ const CreatorDashboard = () => {
       setLoading(false);
     }
   }, [session?.user?.email]);
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    }
-    if (status === 'authenticated' && session?.user?.userType !== 'creator') {
-      router.push('/');
-    }
-  }, [status, session, router]);
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -69,7 +56,7 @@ const CreatorDashboard = () => {
     }
   };
 
-  if (status === 'loading' || loading) {
+  if (loading) {
     return (
       <div className='min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-8rem)] flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100'>
         <div className='text-center'>
@@ -125,12 +112,12 @@ const CreatorDashboard = () => {
                 </div>
 
                 {/* Edit Profile Button */}
-                <button 
-                  onClick={() => router.push('/creator/setup')}
-                  className='w-full sm:w-auto bg-red-500 text-white px-6 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-red-600 active:bg-red-700 transition-all duration-300 text-sm sm:text-base'
+                <Link 
+                  href='/creator/setup'
+                  className='w-full sm:w-auto inline-block bg-red-500 text-white px-6 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-red-600 active:bg-red-700 transition-all duration-300 text-sm sm:text-base text-center'
                 >
                   Edit Profile Details
-                </button>
+                </Link>
               </div>
             </div>
           </div>
