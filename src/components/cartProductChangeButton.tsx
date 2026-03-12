@@ -3,16 +3,11 @@ import React from 'react'
 import { Button } from './ui/button';
 import { CartItem } from '@/types/types';
 import { useRouter } from 'next/navigation';
-import { useQuantityStore } from '@/app/store/quantityStore';
 
-const CartProductChangeButton = ({item, quantity}: {item:CartItem; quantity:number}) => {
+const CartProductChangeButton = ({item}: {item:CartItem}) => {
   const router = useRouter();
-  const fixQuantity = useQuantityStore((state) => state.fixQuantity);
   
   const decreaseItems = async()=>{
-    const previousQuantity = quantity;
-    fixQuantity(quantity - 1);
-    
     try {
       const res = await fetch("/api/delete-cart", {
         method: "PATCH",
@@ -24,7 +19,6 @@ const CartProductChangeButton = ({item, quantity}: {item:CartItem; quantity:numb
       });
 
       if (!res.ok) {
-        fixQuantity(previousQuantity);
         throw new Error("Failed to delete from cart");
       }
       
@@ -36,9 +30,6 @@ const CartProductChangeButton = ({item, quantity}: {item:CartItem; quantity:numb
   }
 
   const increaseItems = async()=>{
-    const previousQuantity = quantity;
-    fixQuantity(quantity + 1);
-    
     try {
       const res = await fetch("/api/add-cart", {
         method: "PATCH",
@@ -50,7 +41,6 @@ const CartProductChangeButton = ({item, quantity}: {item:CartItem; quantity:numb
       });
 
       if (!res.ok) {
-        fixQuantity(previousQuantity);
         throw new Error("Failed to add to cart");
       }
       
