@@ -18,5 +18,6 @@ export const config = {
     "/settings/:path*",
     "/choose-role/:path*",
     "/creator/:path*",
+    "/creators/:path*",
   ],
 };
