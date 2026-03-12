@@ -3,15 +3,24 @@ import React from 'react'
 import Image from 'next/image';
 import { Product } from '@/types/types'
 import { prisma } from '@/utils/connect'
+import AddToCartButton from '@/components/AddToCartButton'
 
 export const dynamic = 'force-dynamic';
 
-const GETDATA = async (creator: string) => {
+const GETDATA = async (creator: string): Promise<Product[]> => {
   try {
     const products = await prisma.product.findMany({
       where: { creatorSlug: creator }
     })
+    
+    // Convert Decimal to string and filter out null images
     return products
+      .filter(p => p.img !== null)
+      .map(p => ({
+        ...p,
+        price: p.price.toString(),
+        img: p.img as string
+      })) as Product[]
   } catch (error) {
     console.error('Error fetching products:', error)
     return []
@@ -33,29 +42,33 @@ const CreatorProductsPage = async ({ params }: { params: Promise<{ creator: stri
   return (
     <div className='flex flex-wrap h-full'>
       {foodProducts.map((items) => (
-        <Link 
-          href={`/product/${items.id}`} 
+        <div 
           key={items.id} 
-          className='h-[60vh] w-full md:w-1/2 lg:w-1/3 p-4 border-b-2 border-r-2 border-red-500 hover:bg-fuchsia-50 transition-all duration-300'
+          className='h-[60vh] w-full md:w-1/2 lg:w-1/3 p-4 border-b-2 border-r-2 border-red-500 hover:bg-fuchsia-50 transition-all duration-300 flex flex-col'
         >
-          <div className='relative h-[85%]'>
-            <Image 
-              className='object-contain p-4 hover:scale-105 duration-500 transition-transform' 
-              src={items.img}
-              alt={items.title}
-              fill
-            />
-          </div>
+          <Link href={`/product/${items.id}`} className='flex-1'>
+            <div className='relative h-full'>
+              <Image 
+                className='object-contain p-4 hover:scale-105 duration-500 transition-transform' 
+                src={items.img}
+                alt={items.title}
+                fill
+              />
+            </div>
+          </Link>
           <div className='flex justify-between px-4 items-center text-red-500'>
             <h1 className='text-xl font-bold'>{items.title}</h1>
             <div className='flex justify-end items-center gap-2'>
-            <span className='text-xl'>${items.price.toString()}</span>
-              <button className='bg-red-500 text-white p-2 rounded-lg text-base uppercase hover:bg-red-600'>
-                add to cart
-              </button>
+              <span className='text-xl'>${items.price.toString()}</span>
+              <AddToCartButton 
+                productId={items.id}
+                price={items.price.toString()}
+                title={items.title}
+                img={items.img}
+              />
             </div>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   )
