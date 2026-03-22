@@ -2,6 +2,8 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { emitCartUpdate } from '@/lib/cartEvents';
+
 
 const AddToCartButton = ({ productId, price, title, img }: { productId: string; price: string; title: string; img: string }) => {
   const router = useRouter();
@@ -32,6 +34,7 @@ const AddToCartButton = ({ productId, price, title, img }: { productId: string; 
       if (res.ok) {
         console.log("✅ Product added to cart");
         router.refresh();
+        emitCartUpdate();
       } else {
         alert("Failed to add to cart");
       }

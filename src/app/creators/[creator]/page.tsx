@@ -3,7 +3,6 @@ import React from 'react'
 import Image from 'next/image';
 import { Product } from '@/types/types'
 import { prisma } from '@/utils/connect'
-import AddToCartButton from '@/components/AddToCartButton'
 
 export const dynamic = 'force-dynamic';
 
@@ -60,12 +59,9 @@ const CreatorProductsPage = async ({ params }: { params: Promise<{ creator: stri
             <h1 className='text-xl font-bold'>{items.title}</h1>
             <div className='flex justify-end items-center gap-2'>
               <span className='text-xl'>${items.price.toString()}</span>
-              <AddToCartButton 
-                productId={items.id}
-                price={items.price.toString()}
-                title={items.title}
-                img={items.img}
-              />
+              <button className='bg-red-500 text-white p-2 rounded-lg text-base uppercase hover:bg-red-600'>
+                add to cart
+              </button>
             </div>
           </div>
         </div>
