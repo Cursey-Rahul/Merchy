@@ -12,7 +12,7 @@ const GETDATA = async (creator: string): Promise<Product[]> => {
       where: { creatorSlug: creator }
     })
     
-    // Convert Decimal to string and filter out null images
+    
     return products
       .filter(p => p.img !== null)
       .map(p => ({
@@ -59,9 +59,12 @@ const CreatorProductsPage = async ({ params }: { params: Promise<{ creator: stri
             <h1 className='text-xl font-bold'>{items.title}</h1>
             <div className='flex justify-end items-center gap-2'>
               <span className='text-xl'>${items.price.toString()}</span>
-              <button className='bg-red-500 text-white p-2 rounded-lg text-base uppercase hover:bg-red-600'>
-                add to cart
-              </button>
+              <Link 
+  href={`/product/${items.id}`}
+  className='bg-red-500 text-white p-2 rounded-lg text-base uppercase hover:bg-red-600'
+>
+  add to cart
+</Link>
             </div>
           </div>
         </div>
