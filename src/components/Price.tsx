@@ -3,6 +3,7 @@ import { Product } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useQuantityStore } from '@/app/store/quantityStore';
+import { emitCartUpdate } from '@/lib/cartEvents';
 
 import { useSession } from 'next-auth/react';
 
@@ -55,6 +56,7 @@ const Price = ( {product}: {product:Product}) => {
 
     const result = await res.json();
     console.log("✅ Cart saved:", result);
+    emitCartUpdate();
 
     router.push("/cart");
   } catch (error) {
