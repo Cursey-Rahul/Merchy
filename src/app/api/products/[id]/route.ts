@@ -49,6 +49,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
 export const DELETE = async (req: NextRequest, { params }: { params: { id: string } }) => {
   try {
     const session = await getSession();
+    console.log('SESSION:', session);
 
     if (!session) {
       return new NextResponse(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
@@ -58,13 +59,15 @@ export const DELETE = async (req: NextRequest, { params }: { params: { id: strin
       where: { email: session.user.email },
       include: { creator: true }
     });
+     console.log('USER:', user);
 
     if (!user || user.userType !== 'creator' || !user.creator) {
       return new NextResponse(JSON.stringify({ error: 'Only creators can delete products' }), { status: 403 });
     }
 
     const existingProduct = await prisma.product.findUnique({ where: { id: params.id } });
-
+     console.log('PRODUCT:', existingProduct); 
+    console.log('CREATOR SLUG MATCH:', existingProduct?.creatorSlug, '===', user?.creator?.slug);
     if (!existingProduct || existingProduct.creatorSlug !== user.creator.slug) {
       return new NextResponse(JSON.stringify({ error: 'Product not found or unauthorized' }), { status: 404 });
     }
