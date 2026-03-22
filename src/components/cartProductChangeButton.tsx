@@ -3,6 +3,7 @@ import React from 'react'
 import { Button } from './ui/button';
 import { CartItem } from '@/types/types';
 import { useRouter } from 'next/navigation';
+import { emitCartUpdate } from '@/lib/cartEvents';
 
 const CartProductChangeButton = ({item}: {item:CartItem}) => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const CartProductChangeButton = ({item}: {item:CartItem}) => {
       }
       
       router.refresh();
+      emitCartUpdate();
       console.log("✅ Item removed from cart");
     } catch (error) {
       console.error("❌ Error updating cart:", error);
@@ -45,6 +47,7 @@ const CartProductChangeButton = ({item}: {item:CartItem}) => {
       }
       
       router.refresh();
+      emitCartUpdate();
       console.log("✅ Item added to cart");
     } catch (error) {
       console.error("❌ Error updating cart:", error);

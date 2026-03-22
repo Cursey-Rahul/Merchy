@@ -24,6 +24,8 @@ export const useCartCount = () => {
 
   useEffect(() => {
     fetchCartCount();
+    window.addEventListener('cart-updated', fetchCartCount);
+    return () => window.removeEventListener('cart-updated', fetchCartCount);
   }, [fetchCartCount]);
 
   return { cartCount, loading, refetch: fetchCartCount };
