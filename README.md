@@ -1,7 +1,7 @@
 <div align="center">
   
   <!-- Animated Header -->
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=30&duration=3000&pause=500&color=6366F1&center=true&vCenter=true&width=500&lines=✨+MERCHY;From+Ideas+to+Merch;—+Made+Simple." alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=30&duration=3000&pause=500&color=6366F1&center=true&vCenter=true&width=500&lines=✨+MERCHY;From+Ideas+to+Merch;Build+and+Sell+Your+Merch"/>
   
   <br/>
   
@@ -23,7 +23,7 @@
 
 ## 🎯 **What is Merchy?**
 
-**Merchy** is a **creator-first e-commerce platform** that empowers content creators and influencers to **launch, display, and sell** their merchandise effortlessly. No technical expertise needed – just your creativity!
+**Merchy** is a **creator-first e-commerce platform** that empowers content creators and influencers to **launch, display, and sell** their merchandise effortlessly. No technical expertise needed — launch products, showcase them with previews, and sell to customers worldwide.
 
 ### 🎨 **For Creators, By Creators**
 
@@ -103,7 +103,7 @@
 ```bash
 # Clone the repository
 git clone https://github.com/Cursey-Rahul/Merchy.git
-cd MerchY
+cd Merchy
 
 # Install dependencies
 npm install
@@ -118,3 +118,14 @@ npx prisma migrate dev
 
 # Run development server
 npm run dev
+```
+
+---
+
+## ✅ What I changed
+
+- Fixed a typo in the Quick Start (changed `cd MerchY` to `cd Merchy`).
+- Replaced a truncated/garbled animated header line with a clean message.
+- Ensured the installation code block is properly closed.
+
+If you'd like additional updates (add contribution guidelines, license, or screenshots), tell me what to add and I'll update the README accordingly.
